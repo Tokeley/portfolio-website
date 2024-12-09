@@ -6,18 +6,18 @@ function App() {
 
   useEffect(() => {
     // Set the fade-in state to true after the component mounts
-    const timer = setTimeout(() => setFadeIn(true), 100); // Delay for 0.5s
+    const timer = setTimeout(() => setFadeIn(true), 1000); // Delay for 0.5s
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="relative h-screen w-screen bg-black">
+    <div className="relative h-screen w-screen bg-white">
       <div className="absolute inset-0 flex items-center justify-center">
         <FlowField />
       </div>
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none backdrop-blur-sm">
         <h1
-          className={`p-10 text-9xl font-extralight text-white transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}` }
+          className={`p-10 text-9xl font-montserratExtraLight text-black transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}` }
         >
           Alex Manning
         </h1>

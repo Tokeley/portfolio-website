@@ -10,11 +10,11 @@ const FlowField = () => {
   useEffect(() => {
     const sketch = (p) => {
       let particles = [];
-      const num = 2000;
+      const num = 3000;
       const noiseScale = 0.002;
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth*0.9, p.windowHeight*0.9).parent(sketchRef.current);
+        p.createCanvas(p.windowWidth*0.9999, p.windowHeight*0.9999).parent(sketchRef.current);
         for (let i = 0; i < num; i++) {
           particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
         }
@@ -22,11 +22,11 @@ const FlowField = () => {
       };
 
       p.draw = () => {
-        p.background(0, 1);
+        p.background(255, 1);
         let time = p.millis() * 0.00000001;
 
         // Set the point size
-        p.strokeWeight(2);
+        p.strokeWeight(4);
         for (let i = 0; i < num; i++) {
           let particle = particles[i];
 
@@ -59,7 +59,7 @@ const FlowField = () => {
           let distanceToEdge = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
 
           // Make the effect more pronounced by adjusting the range and scaling
-          let opacity = p.map(distanceToEdge, 0, p.width / 2, 255, 50);
+          let opacity = p.map(distanceToEdge, 0, p.width / 2, 255, 100);
           opacity = p.constrain(opacity, 150, 255); // Ensure the opacity stays within bounds
           
           p.stroke(r, g, b, 255 - opacity);
