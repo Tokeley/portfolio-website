@@ -10,11 +10,11 @@ const FlowField = () => {
   useEffect(() => {
     const sketch = (p) => {
       let particles = [];
-      const num = 5000;
-      const noiseScale = 0.007;
+      const num = 2000;
+      const noiseScale = 0.002;
 
       p.setup = () => {
-        p.createCanvas(1600, 800).parent(sketchRef.current);
+        p.createCanvas(p.windowWidth*0.9, p.windowHeight*0.9).parent(sketchRef.current);
         for (let i = 0; i < num; i++) {
           particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
         }
@@ -22,22 +22,46 @@ const FlowField = () => {
       };
 
       p.draw = () => {
-        p.background(0, 90);
-        let time = p.millis() * 0.00001;
+        p.background(0, 1);
+        let time = p.millis() * 0.00000001;
 
         // Set the point size
-        p.strokeWeight(5);
+        p.strokeWeight(2);
         for (let i = 0; i < num; i++) {
           let particle = particles[i];
-          let r = p.map(particle.x, 0, p.width, 50, 255);
-          let g = p.map(particle.y, 0, p.height, 50, 255);
-          let b = p.map(particle.x, 0, p.width, 255, 50);
+
+          // Position based
+          // let r = p.map(particle.x, 0, p.width, 50, 255);
+          // let g = p.map(particle.y, 0, p.height, 50, 255);
+          // let b = p.map(particle.x, 0, p.width, 255, 50);
+
+          // let centerX = p.width / 2;
+          // let centerY = p.height / 2;
+          // let distToCenter = p.dist(particle.x, particle.y, centerX, centerY);
+
+          // let r = p.map(distToCenter, 0, p.width / 2, 255, 0);
+          // let g = p.map(distToCenter, 0, p.width / 2, 0, 255);
+          // let b = p.map(distToCenter, 0, p.width / 2, 0, 255);
+
+          // let r = p.map(particle.y, 0, p.height, 255, 0);
+          // let g = p.map(particle.x, 0, p.width, 255, 0);
+          // let b = 200;
+
+          let edgeFactor = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
+          let r = p.map(edgeFactor, 0, p.width / 4, 255, 100);
+          let g = 50;
+          let b = p.map(edgeFactor, 0, p.width / 4, 100, 255);
+
+
+
 
           // Calculate distance to the nearest edge and map it to opacity
           let distanceToEdge = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
-          
-          let opacity = p.map(distanceToEdge, 0, Math.min(p.width, p.height)/2, 255, 30);
 
+          // Make the effect more pronounced by adjusting the range and scaling
+          let opacity = p.map(distanceToEdge, 0, p.width / 2, 255, 50);
+          opacity = p.constrain(opacity, 150, 255); // Ensure the opacity stays within bounds
+          
           p.stroke(r, g, b, 255 - opacity);
           p.point(particle.x, particle.y);
           let n = p.noise(particle.x * noiseScale, particle.y * noiseScale, time);
@@ -67,8 +91,8 @@ const FlowField = () => {
           }
           
           if (!onScreen(particle, p)) {
-            particle.x = p.random(0, p.width);
-            particle.y = p.random(0, p.height);
+            //particle.x = p.random(0, p.width);
+            //particle.y = p.random(0, p.height);
           }
         }
       };
