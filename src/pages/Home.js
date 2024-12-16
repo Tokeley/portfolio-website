@@ -12,17 +12,12 @@ const Home = () => {
 
   return (
     <section id="Home" className="section h-screen border-b-2 border-red-500 flex items-center justify-center z-0">
-        <div className="relative h-screen w-screen bg-white">
-            <div className="absolute inset-0 flex items-center justify-center">
-                <FlowField />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none backdrop-blur-sm">
-                <h1
-                className={`p-10 text-9xl font-montserratMedium text-gray-700 transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}` }
-                >
-                Alex Manning
-                </h1>
-            </div>
+        <div className="flex items-center justify-center pointer-events-none">
+            <h1
+            className={`p-10 text-9xl font-montserratMedium text-gray-700 transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}` }
+            >
+            Alex Manning
+            </h1>
         </div>
     </section>
   );
