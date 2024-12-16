@@ -1,6 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -19,4 +25,9 @@ code {
 @font-face {
   font-family: 'MontserratExtraLight';
   src: url('./fonts/montserrat/Montserrat-ExtraLight.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'MontserratMedium';
+  src: url('./fonts/montserrat/Montserrat-Medium.otf') format('opentype');
 }
