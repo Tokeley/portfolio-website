@@ -12,6 +12,8 @@ module.exports = {
       },
       colors: {
         offwhite: '#f5f5f5',
+        lavendar: '#fbeeff',
+        appleGrey: '#2b2c2a'
       },
     },
   },

@@ -1,24 +1,41 @@
+import React, { useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Experience from './pages/Experience';
-import Resume from './pages/Resume';
-import Contact from './pages/Contact';
 import FlowfieldBackground from './components/FlowfieldBackground';
+import Pages from './Pages';
 
 const App = () => {
+  const [bgOpacity, setBgOpacity] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const homeSection = document.getElementById('Home');
+      const homeHeight = homeSection.offsetHeight;
+      const scrollY = window.scrollY;
+
+      let newOpacity = (scrollY / homeHeight) * 0.8;
+      console.log('scrollY:', scrollY, 'homeHeight:', homeHeight, 'newOpacity:', newOpacity);
+
+      if (scrollY > homeHeight) {
+        setBgOpacity(0.8);
+      } else {
+        setBgOpacity(newOpacity);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    //console.log('bgOpacity:', bgOpacity);
+  }, [bgOpacity]);
+
   return (
     <div className="relative">
       <FlowfieldBackground />
       <Navigation />
-      <div className="relative z-10">
-        <Home />
-        <About />
-        <Projects />
-        <Experience />
-        <Resume />
-        <Contact />
+      <div className="relative z-10 ">
+        <Pages bgOpacity={bgOpacity} />
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ const FlowField = () => {
       };
 
       p.draw = () => {
+        //p.frameRate(60);
         p.background(255, 1);
         let time = p.millis() * 0.00000001;
 
