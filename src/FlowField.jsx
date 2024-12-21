@@ -1,5 +1,5 @@
 // src/FlowField.js
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import p5 from 'p5';
 import { Particle } from './Particle.js';
 
@@ -30,30 +30,10 @@ const FlowField = () => {
         for (let i = 0; i < num; i++) {
           let particle = particles[i];
 
-          // Position based
-          // let r = p.map(particle.x, 0, p.width, 50, 255);
-          // let g = p.map(particle.y, 0, p.height, 50, 255);
-          // let b = p.map(particle.x, 0, p.width, 255, 50);
-
-          // let centerX = p.width / 2;
-          // let centerY = p.height / 2;
-          // let distToCenter = p.dist(particle.x, particle.y, centerX, centerY);
-
-          // let r = p.map(distToCenter, 0, p.width / 2, 255, 0);
-          // let g = p.map(distToCenter, 0, p.width / 2, 0, 255);
-          // let b = p.map(distToCenter, 0, p.width / 2, 0, 255);
-
-          // let r = p.map(particle.y, 0, p.height, 255, 0);
-          // let g = p.map(particle.x, 0, p.width, 255, 0);
-          // let b = 200;
-
           let edgeFactor = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
           let r = p.map(edgeFactor, 0, p.width / 4, 255, 100);
           let g = 50;
           let b = p.map(edgeFactor, 0, p.width / 4, 100, 255);
-
-
-
 
           // Calculate distance to the nearest edge and map it to opacity
           let distanceToEdge = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
@@ -89,20 +69,11 @@ const FlowField = () => {
               particle.x += p.cos(a);
               particle.y += p.sin(a);
           }
-          
-          if (!onScreen(particle, p)) {
-            //particle.x = p.random(0, p.width);
-            //particle.y = p.random(0, p.height);
-          }
         }
       };
 
       const onScreen = (v, p) => {
         return v.x >= 0 && v.x <= p.width && v.y >= 0 && v.y <= p.height;
-      };
-
-      p.mouseReleased = () => {
-        setOrientation((prevOrientation) => (prevOrientation + 1) % 4);
       };
     };
 
@@ -111,7 +82,7 @@ const FlowField = () => {
     return () => {
       myP5.remove();
     };
-  }, [orientation]);
+  }, []);
 
   return <div ref={sketchRef}></div>;
 };

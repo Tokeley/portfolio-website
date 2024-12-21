@@ -2,6 +2,9 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
+import Experience from './pages/Experience';
+import Resume from './pages/Resume';
+import Contact from './pages/Contact';
 import FlowfieldBackground from './components/FlowfieldBackground';
 
 const App = () => {
@@ -13,6 +16,9 @@ const App = () => {
         <Home />
         <About />
         <Projects />
+        <Experience />
+        <Resume />
+        <Contact />
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import React from 'react';
 import FlowField from '../FlowField';
 
 const FlowfieldBackground = () => {

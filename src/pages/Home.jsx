@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FlowField from '../FlowField';
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
   }, []);
 
   return (
-    <section id="Home" className="section h-screen border-b-2 border-red-500 flex items-center justify-center z-0">
+    <section id="Home" className="section h-screen flex items-center justify-center z-0">
         <div className="flex items-center justify-center pointer-events-none">
             <h1
             className={`p-10 text-9xl font-montserratMedium text-gray-700 transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}` }
