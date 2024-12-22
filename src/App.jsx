@@ -12,11 +12,11 @@ const App = () => {
       const homeHeight = homeSection.offsetHeight;
       const scrollY = window.scrollY;
 
-      let newOpacity = (scrollY / homeHeight) * 0.8;
+      let newOpacity = (scrollY / homeHeight) * 0.9;
       console.log('scrollY:', scrollY, 'homeHeight:', homeHeight, 'newOpacity:', newOpacity);
 
       if (scrollY > homeHeight) {
-        setBgOpacity(0.8);
+        setBgOpacity(0.9);
       } else {
         setBgOpacity(newOpacity);
       }

@@ -8,6 +8,7 @@ module.exports = {
       fontFamily: {
         montserratExtraLight: ['MontserratExtraLight', 'sans-serif'],
         montserratMedium: ['MontserratMedium', 'sans-serif'],
+        montserratLight: ['MontserratLight', 'sans-serif'],
         interRegular: ['InterRegular', 'sans-serif'],
       },
       colors: {
