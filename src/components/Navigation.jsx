@@ -65,15 +65,6 @@ const Navigation = () => {
             </div>
 
             <div className="flex items-center group">
-              <a href="#Resume" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700">
-                <i className="fa-solid fa-file text-gray-700 dark:text-offwhite text-2xl"></i>
-              </a>
-              <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-3xl">
-                Resume
-              </span>
-            </div>
-
-            <div className="flex items-center group">
               <a href="#Contact" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700">
                 <i className="fa-solid fa-envelope text-gray-700 dark:text-offwhite text-2xl"></i>
               </a>

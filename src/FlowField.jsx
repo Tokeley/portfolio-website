@@ -1,7 +1,5 @@
-// src/FlowField.js
 import { useRef, useEffect, useState } from 'react';
 import p5 from 'p5';
-import { Particle } from './Particle.js';
 
 const FlowField = () => {
   const isDarkMode = document.documentElement.classList.contains('dark');

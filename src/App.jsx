@@ -5,7 +5,7 @@ import FlowfieldBackground from './components/FlowfieldBackground';
 import Pages from './Pages';
 
 const App = () => {
-  const [bgOpacity, setBgOpacity] = useState(0);
+  const [bgOpacity, setBgOpacity] = useState(0.3);
   const [checked, setChecked] = useState(false)
 
   useEffect(() => {
@@ -14,8 +14,8 @@ const App = () => {
       if (homeSection) {
         const homeHeight = homeSection.offsetHeight;
         const scrollY = window.scrollY;
-        const newOpacity = (scrollY / homeHeight) * 0.9;
-        setBgOpacity(scrollY > homeHeight ? 0.9 : newOpacity);
+        const newOpacity = (scrollY / homeHeight) * 0.6;
+        setBgOpacity(scrollY > homeHeight ? 0.9 : newOpacity + 0.3);
       }
     };
 

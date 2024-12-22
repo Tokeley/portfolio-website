@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Experience from './pages/Experience';
-import Resume from './pages/Resume';
 import Contact from './pages/Contact';
 
 const Pages = ({ bgOpacity, checked }) => {
@@ -32,7 +31,6 @@ const Pages = ({ bgOpacity, checked }) => {
       <About />
       <Projects />
       <Experience />
-      <Resume />
       <Contact />
     </div>
   );

@@ -1,7 +1,3 @@
-import { Heading } from '@chakra-ui/react';
-import { DataListItem, DataListRoot } from "@/components/ui/data-list"
-import { h2 } from 'framer-motion/client';
-
 const stats = [
   { label: "Creating:", value: "This website", link: "https://github.com/Tokeley/portfolio-website"},
   { label: "Working at:", value: "Serato Audio Research Lab", link: "https://serato.com/"}, 
@@ -47,6 +43,15 @@ const About = () => {
               ))}
             </div>
           </div>
+          <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-4'></div>
+          <a href="/resources/Alex_Manning_CV_2024.pdf" target="_blank" rel="noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
+              <i className="fa fa-file text-gray-700 dark:text-offwhite text-4xl"></i>
+              <p className='ml-4 text-3xl font-montserratMedium text-gray-700 dark:text-offwhite p-2'>
+                  My Resume
+              </p>
+              <i className="fa fa-arrow-right text-gray-700 dark:text-offwhite text-3xl pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300"></i>
+          </a>
+
         </div>
         <div className='border-r-2 border-gray-400 dark:border-offwhite'></div>
         <div className='h-full w-1/2  ml-10'>
