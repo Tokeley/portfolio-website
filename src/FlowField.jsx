@@ -4,6 +4,7 @@ import p5 from 'p5';
 import { Particle } from './Particle.js';
 
 const FlowField = () => {
+  const isDarkMode = document.documentElement.classList.contains('dark');
   const sketchRef = useRef();
   const [orientation, setOrientation] = useState(0);
 
@@ -19,11 +20,15 @@ const FlowField = () => {
           particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
         }
         p.stroke(255);
+        if (isDarkMode){
+          p.background(0, 1);
+        }
+        else{
+          p.background(255, 1);
+        }
       };
 
       p.draw = () => {
-        //p.frameRate(60);
-        p.background(255, 1);
         let time = p.millis() * 0.00000001;
 
         // Set the point size
