@@ -1,3 +1,3 @@
 # To do
 
-- Put resume in about section
+- Make dark mode a button with sun/moon and also havee it match other icons in nav bar with drop shadow and stuff
