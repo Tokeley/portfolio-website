@@ -135,7 +135,7 @@ const Card = ({ id, title, description, date, technologies, checked }) => {
           </chakra.h1>
           <Text className="lg:text-sm text-xs font-montserratLight text-gray-600 dark:text-gray-300">{description}</Text>
         </VStack>
-        <HStack spacing={2} align="left" mt={2}>
+        <HStack spacing={2} align="left" mt={2} className='flex-wrap'>
             {technologies.map((tech, index) => (
               <Badge
                 key={index}
