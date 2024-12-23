@@ -7,18 +7,18 @@ const projects = [
   { title: "NOW Salt", description: "An internal use web application for NOW NZ to streamline client and service information retrieval for technical support staff. The app allowed you to search the client database, view profiles and view what services clients had. The web app made queires to a GraphQL endpoint in order to acess and update the compnay database.", technologies: ['React', 'GraphQL', 'MUI'], link: "", imageLink: "resources/now-salt.png" },
   { title: "Lightspeed", description: "Lightspeed is an educational videogame with the aim of teaching 5-12 year olds basic arithmetic. The game invloves flying a sapceship through the cosmos and surviving by lazering astroids. The game was created using the Pygame library and the pixel art was created by my friend George Hart. The game also invloves sound effects and background music I composed myself.", technologies: ['Python', 'Pygame'], link: "https://github.com/Tokeley/Light-Speed", imageLink: "resources/lightspeed.png" },
   { title: "Devastation", description: "Devastation is an educational web-based multiplayer videogame with the aim of teaching computer science students how Kanban works. The game invloves playing in a team of three as either the developer, tester or project manager. The aim of the game is to complete as many tickets as possible by using the workstations in each colum. ", technologies: ['Java', 'SpringBoot', 'WebSockets', 'React', 'PixiJS', 'AWS'], link: "https://github.com/Tokeley/devastation", imageLink: "resources/devastation.png" },
-  { title: "Reel It In", description: "Reel-It-In is a top down, pixel art, fishing themed video game where you control a fishing boat. The aim of the game is to collect all the fish by collecting keys to open doors and exploring the maze then returning the fish to the dock to allow you through to the whirlpool portal that teleports you to the next level.", technologies: ['Java', 'Java Swing'], link: "https://github.com/Tokeley/reel-it-in", imageLink: "resources/reel-it-in.png" },
+  { title: "Reel It In", description: "Reel-It-In is a top down, pixel art, fishing themed video game where you control a fishing boat. The aim of the game is to collect all the fish by collecting keys to open doors and exploring the maze then returning the fish to the dock to allow you through to the whirlpool portal that teleports you to the next level.", technologies: ['Java', 'Swing'], link: "https://github.com/Tokeley/reel-it-in", imageLink: "resources/reel-it-in.png" },
 
 ]
 
 const Projects = () => {
   return (
     <section id="Projects" className="section h-full flex items-center justify-center pt-14">
-      <div className="h-full w-2/3 justify-center ">
-        <h1 className='pb-10 text-8xl font-montserratMedium text-gray-700 dark:text-offwhite p-2 text-center'>
+      <div className="h-full xl:w-2/3 w-10/12 justify-center ">
+        <h1 className='pb-6 xl:text-6xl text-4xl font-montserratMedium text-gray-700 dark:text-offwhite p-2 text-center'>
           Projects
         </h1>
-        <div className='w-full mt-4 justify-center'>
+        <div className='w-full mt-2 justify-center'>
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project}/>
           ))}

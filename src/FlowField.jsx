@@ -30,7 +30,7 @@ const FlowField = () => {
         let time = p.millis() * 0.00000001;
 
         // Set the point size
-        p.strokeWeight(4);
+        p.strokeWeight(2);
         for (let i = 0; i < num; i++) {
           let particle = particles[i];
 

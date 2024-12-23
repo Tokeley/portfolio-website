@@ -14,29 +14,29 @@ const Home = () => {
     <section id="Home" className="section h-screen flex items-center justify-center z-0">
         <div className={` flex items-center justify-center flex-col transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
             <h1
-            className='text-9xl font-montserratMedium text-gray-700 dark:text-offwhite'
+              className='xl:text-7xl text-5xl font-montserratMedium text-gray-700 dark:text-offwhite text-center'
             >
             ALEX MANNING
             </h1>
             <div className={`flex space-x-4 mt-4`}>
                 <div className="hover:scale-110 transition-transform duration-300">
                   <a href="https://github.com/Tokeley" target="_blank" rel="noopener noreferrer">
-                    <FaGithub className="text-5xl text-gray-700 dark:text-offwhite cursor-pointer" />
+                    <FaGithub className="text-3xl text-gray-700 dark:text-offwhite cursor-pointer" />
                   </a>
                 </div>
                 <div className="hover:scale-110 transition-transform duration-300">
                   <a href="mailto:alex.t.manning@gmail.com" target="_blank" rel="noopener noreferrer">
-                    <FaEnvelope className="text-5xl text-gray-700 dark:text-offwhite cursor-pointer" />
+                    <FaEnvelope className="text-3xl text-gray-700 dark:text-offwhite cursor-pointer" />
                   </a>
                 </div>
                 <div className="hover:scale-110 transition-transform duration-300">
                   <a href="https://www.instagram.com/alex.manning_/" target="_blank" rel="noopener noreferrer">
-                    <FaInstagram className="text-5xl text-gray-700 dark:text-offwhite cursor-pointer" />
+                    <FaInstagram className="text-3xl text-gray-700 dark:text-offwhite cursor-pointer" />
                   </a>
                 </div>
                 <div className="hover:scale-110 transition-transform duration-300">
                   <a href="https://www.linkedin.com/in/alex-manning-7993ab231/" target="_blank" rel="noopener noreferrer">
-                    <FaLinkedin className="text-5xl text-gray-700 dark:text-offwhite cursor-pointer" />
+                    <FaLinkedin className="text-3xl text-gray-700 dark:text-offwhite cursor-pointer" />
                   </a>
                 </div>
             </div>
