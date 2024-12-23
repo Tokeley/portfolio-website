@@ -11,7 +11,7 @@ const Navigation = () => {
         const lastPoint = beginPoint + element.clientHeight + 100;
 
         if (window.scrollY >= beginPoint && window.scrollY <= lastPoint) {
-          bar.style.top = `${i * 88}px`; // Adjust based on new item height + margin
+          bar.style.top = `${i * 88}px`;
         }
       });
     };
@@ -32,7 +32,7 @@ const Navigation = () => {
               <a href="#Home" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700"> 
                 <i className="fa-solid fa-house text-gray-700 dark:text-offwhite text-2xl"></i>
               </a>
-              <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-3xl">
+              <span className="font-montserratMedium ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-2xl">
                 Home
               </span>
             </div>
@@ -41,7 +41,7 @@ const Navigation = () => {
               <a href="#About" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700">
                 <i className="fa-solid fa-book text-gray-700 dark:text-offwhite text-2xl"></i>
               </a>
-              <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-3xl">
+              <span className="font-montserratMedium ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-2xl">
                 About
               </span>
             </div>
@@ -50,7 +50,7 @@ const Navigation = () => {
               <a href="#Projects" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700">
                 <i className="fa-solid fa-hammer text-gray-700 dark:text-offwhite text-2xl"></i>
               </a>
-              <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-3xl">
+              <span className="font-montserratMedium ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-2xl">
                 Projects
               </span>
             </div>
@@ -59,7 +59,7 @@ const Navigation = () => {
               <a href="#Experience" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700">
                 <i className="fa-solid fa-code text-gray-700 dark:text-offwhite text-2xl"></i>
               </a>
-              <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-3xl">
+              <span className="font-montserratMedium ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-2xl">
                 Experience
               </span>
             </div>
@@ -68,7 +68,7 @@ const Navigation = () => {
               <a href="#Contact" className="w-12 h-12 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700">
                 <i className="fa-solid fa-envelope text-gray-700 dark:text-offwhite text-2xl"></i>
               </a>
-              <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-3xl">
+              <span className="font-montserratMedium ml-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-2xl">
                 Contact
               </span>
             </div>
