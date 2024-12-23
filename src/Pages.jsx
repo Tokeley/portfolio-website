@@ -17,7 +17,6 @@ const Pages = ({ bgOpacity, checked }) => {
 
   return (
     <div
-    
       style={{
         backgroundColor: `var(--dynamic-bg-color)`,
         '--dynamic-bg-color': backgroundColor,
