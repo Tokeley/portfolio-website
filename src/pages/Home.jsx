@@ -14,7 +14,7 @@ const Home = () => {
     <section id="Home" className="section h-screen flex items-center justify-center z-0">
         <div className={` flex items-center justify-center flex-col transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
             <h1
-              className='xl:text-7xl text-5xl font-montserratMedium text-gray-700 dark:text-offwhite text-center'
+              className='lg:text-7xl text-5xl font-montserratMedium text-gray-700 dark:text-offwhite text-center'
             >
             ALEX MANNING
             </h1>

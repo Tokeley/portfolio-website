@@ -39,10 +39,10 @@ const App = () => {
   return (
     <div className="relative">
       <FlowfieldBackground />
-      <div className="hidden xl:block">
+      <div className="hidden lg:block">
         <Navigation />
       </div>
-      <div className="block xl:hidden">
+      <div className="block lg:hidden">
         <NavigationMobile />
       </div>
       <DarkModeSwitch checked={checked} setChecked={setChecked} />

@@ -6,10 +6,6 @@ import Experience from './pages/Experience';
 import Contact from './pages/Contact';
 
 const Pages = ({ bgOpacity, checked }) => {
-  
-  const isDarkMode = document.documentElement.classList.contains('dark');
-
-  console.log("OPacity: " + bgOpacity + " Darkmode" + isDarkMode);
 
   let backgroundColor
   if (checked){
@@ -30,7 +26,7 @@ const Pages = ({ bgOpacity, checked }) => {
       <Home />
       <About />
       <Projects />
-      <Experience />
+      <Experience checked={checked}/>
       <Contact />
     </div>
   );

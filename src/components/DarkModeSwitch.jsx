@@ -4,7 +4,7 @@ import { Switch } from "@/components/ui/switch"
 const DarkModeSwitch = ({ checked, setChecked }) => {
     return (
       <div className="flex items-center fixed top-6 right-6 z-50 group">
-        <span className="hidden xl:flex font-montserratMedium mr-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-xl">
+        <span className="hidden lg:flex font-montserratMedium mr-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-xl">
           {checked ? "Dark Mode" : "Light Mode"}
         </span>
         <a
