@@ -2,6 +2,7 @@ import { Input, Textarea, Button } from '@chakra-ui/react';
 import { RiMailLine, RiCheckLine } from "react-icons/ri";
 import emailjs from 'emailjs-com';
 import { useState } from 'react';
+import { Field } from "@/components/ui/field"
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -64,50 +65,60 @@ const Contact = () => {
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="lg:flex lg:space-y-0 space-y-4">
-            <Input
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              placeholder="First Name"
-              variant="outline"
-              className='font-montserratMedium w-full lg:mr-2 border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
-            />
-            <Input
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              placeholder="Last Name"
-              variant="outline"
-              className='font-montserratMedium w-full lg:ml-2  border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
-            />
+            <Field label="First Name" required className='lg:mr-2'>
+              <Input
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                placeholder="Enter First Name"
+                variant="outline"
+                className='font-montserratMedium w-full border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
+              />
+            </Field>
+            <Field label="Last Name" required className='lg:ml-2'>
+              <Input
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                placeholder="Enter Last Name"
+                variant="outline"
+                className='font-montserratMedium w-full  border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
+              />
+            </Field>
           </div>
           <div className="lg:flex lg:space-y-0 space-y-4 mt-4">
-            <Input
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Email"
-              variant="outline"
-              className='font-montserratMedium w-full lg:mr-2 border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
-            />
-            <Input
-              name="subject"
-              value={formData.subject}
-              onChange={handleInputChange}
-              placeholder="Subject"
-              variant="outline"
-              className='font-montserratMedium w-full lg:ml-2 border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
-            />
+            <Field label="Email" required className='lg:mr-2'>
+              <Input
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Enter Email"
+                variant="outline"
+                className='font-montserratMedium w-full border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
+              />
+            </Field>
+            <Field label="Subject" required className='lg:ml-2'>
+              <Input
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                placeholder="Enter Subject"
+                variant="outline"
+                className='font-montserratMedium w-full border-2 dark:border-gray-800 px-2 bg-white/70 dark:bg-gray-700/70'
+              />
+            </Field>
           </div>
           <div className='mt-4'>
-            <Textarea
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              placeholder="Message"
-              variant="outline"
-              className='font-montserratMedium h-48 w-full border-2 dark:border-gray-800 p-2 bg-white/70 dark:bg-gray-700/70'
-            />
+            <Field label="Message" required>
+              <Textarea
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                placeholder="Enter Message"
+                variant="outline"
+                className='font-montserratMedium h-48 w-full border-2 p-2 dark:border-gray-800 bg-white/70 dark:bg-gray-700/70'
+              />
+            </Field>
           </div>
           <div className='flex justify-center'>
             <Button
