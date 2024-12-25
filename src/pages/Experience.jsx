@@ -125,7 +125,7 @@ const Card = ({ id, title, description, date, technologies, checked }) => {
       }}
     >
       <Box>
-        <Text color={isEvenId ? 'teal.400' : 'blue.400'} className="lg:text-sm text-xs font-montserratMedium text-gray-800 dark:text-gray-200">
+        <Text color={isEvenId ? 'purple.400' : 'blue.400'} className="lg:text-sm text-xs font-montserratMedium text-gray-800 dark:text-gray-200">
           {date}
         </Text>
 
