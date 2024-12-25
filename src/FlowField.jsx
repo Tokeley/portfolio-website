@@ -4,7 +4,7 @@ import p5 from 'p5';
 const FlowField = () => {
   const isDarkMode = document.documentElement.classList.contains('dark');
   const sketchRef = useRef();
-  const [orientation, setOrientation] = useState(0);
+  const [orientation, setOrientation] = useState(Math.floor(Math.random() * 4));
 
   useEffect(() => {
     const sketch = (p) => {
