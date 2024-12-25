@@ -9,7 +9,8 @@ const FlowField = () => {
   useEffect(() => {
     const sketch = (p) => {
       let particles = [];
-      const num = 3000;
+      
+      const num = window.innerWidth < 1024 ? 750 : 3000;
       const noiseScale = 0.002;
 
       p.setup = () => {
