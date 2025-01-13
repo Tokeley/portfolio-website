@@ -10,7 +10,8 @@ const FlowField = () => {
     const sketch = (p) => {
       let particles = [];
       
-      const num = window.innerWidth < 1024 ? 750 : 3000;
+      const screenSize = window.innerWidth * window.innerHeight;
+      const num = screenSize / 500;
       const noiseScale = 0.002;
 
       p.setup = () => {
@@ -75,10 +76,6 @@ const FlowField = () => {
               particle.y += p.sin(a);
           }
         }
-      };
-
-      const onScreen = (v, p) => {
-        return v.x >= 0 && v.x <= p.width && v.y >= 0 && v.y <= p.height;
       };
     };
 
