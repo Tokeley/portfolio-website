@@ -1,5 +1,4 @@
 import React from 'react'
-import { Switch } from "@/components/ui/switch"
 
 const DarkModeSwitch = ({ checked, setChecked }) => {
     return (
@@ -24,5 +23,3 @@ const DarkModeSwitch = ({ checked, setChecked }) => {
   };
 
 export default DarkModeSwitch
-
-//<Switch size="lg" className="fixed top-6 right-6 z-50" checked={checked} onCheckedChange={(e) => setChecked(e.checked)}/>
