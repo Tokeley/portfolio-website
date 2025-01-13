@@ -56,13 +56,13 @@ const About = () => {
           </div>
           <div className='lg:border-r-2 border-gray-400 dark:border-offwhite'></div>
           <div className='h-full lg:w-1/2  lg:ml-8 '>
-            <p className='lg:text-base text-xs font-montserratLight pb-4'>
+            <p className='lg:text-base text-sm font-montserratLight pb-4'>
               I am a developer who is passionate about crafting accessible and robust applications that solve problems and provide genuine value to the user. Every project I work on I make sure is equally well designed as it is well engineered. I believe code can be just as beautiful as an aesthetic UI. Currently I am studying Software Engineering at Victoria University of Wellington. Areas that I am interested to work within include real time applications, audio software and full-stack web development.
             </p>
-            <p className='lg:text-base text-xs  font-montserratLight font-light pb-4'>
+            <p className='lg:text-base text-sm  font-montserratLight font-light pb-4'>
               Currently, I am a software engineer intern at Serato, working on hardware mapping. I contribute to the implementation and testing of a new mapping framework as well as general bug fixes. Last summer I did an Internship at NOW Broadband in Napier. At NOW, I developed and deployed an internal web application to streamline client and service information retrieval for technical support staff, enhancing operational efficiency and customer service delivery. 
             </p>
-            <p className='lg:text-base text-xs font-montserratLight font-light pb-4'>
+            <p className='lg:text-base text-sm font-montserratLight font-light pb-4'>
               In my spare time, I’m usually going to the gym, mountain biking, making beats, mixing UK Garage or jamming on the bass guitar with my band mates. 
             </p>
           </div>
