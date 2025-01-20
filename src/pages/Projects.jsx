@@ -13,7 +13,7 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section id="Projects" className="section h-full flex items-center justify-center pt-24">
+    <section id="Projects" className="section h-full flex items-center justify-center pt-20">
       <div className="h-full lg:w-2/3 w-10/12 justify-center ">
         <h1 className='pb-6 lg:text-6xl text-4xl font-montserratMedium text-gray-700 dark:text-offwhite p-2 text-center'>
           Projects
