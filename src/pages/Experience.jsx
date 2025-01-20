@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+import { DarkModeContext } from '../contexts/DarkModeContext';
 import {
   Box,
   chakra,
@@ -44,7 +45,7 @@ const experiences = [
   }
 ];
 
-const Experience = ({checked}) => {
+const Experience = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const isDesktop = useBreakpointValue({ base: false, md: true });
 
@@ -61,7 +62,7 @@ const Experience = ({checked}) => {
               <>
                 <EmptyCard />
                 <LineWithDot />
-                <Card {...milestone} checked={checked} />
+                <Card {...milestone} />
               </>
             )}
 
@@ -69,14 +70,14 @@ const Experience = ({checked}) => {
             {isMobile && (
               <>
                 <LineWithDot />
-                <Card {...milestone} checked={checked}/>
+                <Card {...milestone} />
               </>
             )}
 
             {/* Desktop view(right card) */}
             {isDesktop && milestone.id % 2 !== 0 && (
               <>
-                <Card {...milestone} checked={checked}/>
+                <Card {...milestone} />
 
                 <LineWithDot />
                 <EmptyCard />
@@ -90,7 +91,9 @@ const Experience = ({checked}) => {
   );
 };
 
-const Card = ({ id, title, description, date, technologies, checked }) => {
+const Card = ({ id, title, description, date, technologies }) => {
+  const { darkModeOn } = useContext(DarkModeContext);
+
   const isEvenId = id % 2 == 0;
   let borderWidthValue = isEvenId ? '15px 15px 15px 0' : '15px 0 15px 15px';
   let leftValue = isEvenId ? '-15px' : 'unset';
@@ -115,7 +118,7 @@ const Card = ({ id, title, description, date, technologies, checked }) => {
         content: `""`,
         w: '0',
         h: '0',
-        borderColor: checked ? 'transparent rgba(31, 41, 55, 0.7) transparent' : 'transparent rgba(255, 255, 255, 0.7) transparent',
+        borderColor: darkModeOn ? 'transparent rgba(31, 41, 55, 0.7) transparent' : 'transparent rgba(255, 255, 255, 0.7) transparent',
         borderStyle: 'solid',
         borderWidth: borderWidthValue,
         position: 'absolute',

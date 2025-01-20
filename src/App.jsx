@@ -1,16 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { SoundProvider } from './contexts/SoundContext';
 import Navigation from './components/Navigation';
 import NavigationMobile from './components/NavigationMobile';
 import FlowfieldBackground from './components/FlowfieldBackground';
 import Pages from './Pages';
-import DarkModeSwitch from './components/DarkModeSwitch';
-import MuteSwitch from './components/MuteSwitch';
+import Header from './components/Header';
+import { DarkModeContext } from './contexts/DarkModeContext';
 
 const App = () => {
   const [bgOpacity, setBgOpacity] = useState(0.3);
-  const [checked, setChecked] = useState(false);
+  const { darkModeOn, setDarkModeOn } = useContext( DarkModeContext );
 
+  useEffect(() => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setDarkModeOn(true);
+    } else {
+      setDarkModeOn(false);
+    }
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkModeOn);
+  }, [darkModeOn]);
+    
   useEffect(() => {
     const handleScroll = () => {
       const homeSection = document.getElementById('Home');
@@ -22,38 +34,27 @@ const App = () => {
       }
     };
 
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setChecked(true);
-    } else {
-      setChecked(false);
-    }
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', checked);
-  }, [checked]);
-
   return (
     <SoundProvider>
-      <div className="relative">
-        <FlowfieldBackground />
-        <div className="hidden lg:block">
-          <Navigation />
+        <div className="relative">
+          <FlowfieldBackground />
+          <div className="hidden lg:block">
+            <Navigation />
+          </div>
+          <div className="block lg:hidden">
+            <NavigationMobile />
+          </div>
+          <Header/>
+          <div className="relative z-10">
+            <Pages bgOpacity={bgOpacity} />
+          </div>
         </div>
-        <div className="block lg:hidden">
-          <NavigationMobile />
-        </div>
-        <MuteSwitch />
-        <DarkModeSwitch checked={checked} setChecked={setChecked} />
-        <div className="relative z-10">
-          <Pages bgOpacity={bgOpacity} checked={checked} />
-        </div>
-      </div>
     </SoundProvider>
   );
 };

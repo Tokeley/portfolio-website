@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from 'react'
 import useSound from 'use-sound';
 import { SoundContext } from '../contexts/SoundContext';
 import test_sound from '/resources/test_sound.mp3';
-import SoundWidget from './SoundWidget';
-
 
 const MuteSwitch = () => {
     const [play, { stop }] = useSound(test_sound);
@@ -33,13 +31,13 @@ const MuteSwitch = () => {
           )}
         </a>
 
-        <div
+        {/* <div
           className={`absolute left-12 transform transition-all duration-300 ease-in-out w-full sm:w-60 ${
             muted ? 'translate-x-[-150%] opacity-0' : 'translate-x-0 opacity-100'
           }`}
         >
           <SoundWidget />
-        </div>
+        </div> */}
         
       </div>
     );
