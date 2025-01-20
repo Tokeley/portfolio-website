@@ -58,7 +58,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="Contact" className="section h-screen flex justify-center pt-14">
+    <section id="Contact" className="section h-screen flex justify-center pt-24">
       <div className="lg:w-2/3 w-10/12 justify-center p-0">
         <h1 className='pb-6 lg:text-6xl text-4xl font-montserratMedium text-gray-700 dark:text-offwhite p-2 text-center'>
           Contact
@@ -116,7 +116,7 @@ const Contact = () => {
                 onChange={handleInputChange}
                 placeholder="Enter Message"
                 variant="outline"
-                className='font-montserratMedium h-48 w-full border-2 p-2 dark:border-gray-800 bg-white/70 dark:bg-gray-700/70'
+                className='font-montserratMedium sm:h-48 h-28 w-full border-2 p-2 dark:border-gray-800 bg-white/70 dark:bg-gray-700/70'
               />
             </Field>
           </div>

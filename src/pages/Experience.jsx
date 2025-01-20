@@ -50,7 +50,7 @@ const Experience = () => {
   const isDesktop = useBreakpointValue({ base: false, md: true });
 
   return (
-    <section id="Experience" className="h-full pt-14">
+    <section id="Experience" className="h-full pt-24">
       <Container className="lg:w-2/3 w-10/12 justify-center p-0">
         <h1 className='pb-6 lg:text-6xl text-4xl font-montserratMedium text-gray-700 dark:text-offwhite p-2 text-center'>
           Experience
