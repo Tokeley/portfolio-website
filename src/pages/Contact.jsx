@@ -116,7 +116,7 @@ const Contact = () => {
                 onChange={handleInputChange}
                 placeholder="Enter Message"
                 variant="outline"
-                className='font-montserratMedium sm:h-48 h-28 w-full border-2 p-2 dark:border-gray-800 bg-white/70 dark:bg-gray-700/70'
+                className='font-montserratMedium sm:h-48 w-full border-2 p-2 dark:border-gray-800 bg-white/70 dark:bg-gray-700/70'
               />
             </Field>
           </div>
