@@ -17,7 +17,7 @@ const MuteSwitch = () => {
       };
 
     return (
-      <div className="flex items-center fixed top-6 left-6 z-50 group w-full sm:w-60">
+      <div className="flex items-center group">
         <a
           className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
                      transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 

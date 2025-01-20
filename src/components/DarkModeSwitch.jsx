@@ -10,7 +10,7 @@ const DarkModeSwitch = () => {
   }
 
   return (
-    <div className="flex items-center fixed top-6 right-6 z-50 group">
+    <div className="flex items-center group pr-0 sm:pr-4">
       <span className="hidden lg:flex font-montserratMedium mr-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-700 dark:text-offwhite text-xl">
         {darkModeOn ? "Dark Mode" : "Light Mode"}
       </span>

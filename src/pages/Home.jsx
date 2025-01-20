@@ -12,11 +12,11 @@ const Home = () => {
 
   return (
     <section id="Home" className="section h-screen flex items-center justify-center z-0">
-        <div className={` flex items-center justify-center flex-col transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={` w-60 sm:w-auto flex items-center justify-center flex-col transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
             <h1
               className='lg:text-7xl text-5xl font-montserratMedium text-gray-700 dark:text-offwhite text-center'
             >
-            ALEX MANNING
+              ALEX MANNING
             </h1>
             <div className={`flex space-x-4 mt-4`}>
                 <div className="hover:scale-110 transition-transform duration-300">
