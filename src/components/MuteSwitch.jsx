@@ -1,19 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
-import useSound from 'use-sound';
 import { SoundContext } from '../contexts/SoundContext';
-import test_sound from '/resources/test_sound.mp3';
 
 const MuteSwitch = () => {
-    const [play, { stop }] = useSound(test_sound);
     const { muted, setMuted } = useContext(SoundContext);
 
     const handleClick = () => {
         setMuted(!muted);
-        if (muted) {
-          play();
-        } else {
-          stop();
-        }
       };
 
     return (
