@@ -22,7 +22,6 @@ const SoundWidget = () => {
 
   const stop = () => {
     bgMusic.pause();
-    bgMusic.currentTime = 0; // Reset playback position
   };
 
   const changeTrack = (direction) => {

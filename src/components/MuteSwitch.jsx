@@ -1,38 +1,39 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext } from 'react';
+import useSound from 'use-sound';
 import { SoundContext } from '../contexts/SoundContext';
 
 const MuteSwitch = () => {
-    const { muted, setMuted } = useContext(SoundContext);
+  const { muted, setMuted } = useContext(SoundContext);
 
-    const handleClick = () => {
-        setMuted(!muted);
-      };
+  const [playSoundOn] = useSound('/resources/audio/SoundOn.mp3');
+  const [playSoundOff] = useSound('/resources/audio/SoundOff.mp3');
 
-    return (
-      <div className="flex items-center group">
-        <a
-          className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
-                     transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
-                     hover:scale-105 hover:shadow-xl z-50"
-          onClick={handleClick}
-        >
-          {muted ? (
-            <i className="fa-solid fa-volume-xmark text-gray-700 dark:text-offwhite text-xl"></i>
-          ) : (
-            <i className="fa-solid fa-volume-high text-gray-700 dark:text-offwhite text-xl"></i>
-          )}
-        </a>
+  const handleClick = () => {
+    setMuted(!muted);
 
-        {/* <div
-          className={`absolute left-12 transform transition-all duration-300 ease-in-out w-full sm:w-60 ${
-            muted ? 'translate-x-[-150%] opacity-0' : 'translate-x-0 opacity-100'
-          }`}
-        >
-          <SoundWidget />
-        </div> */}
-        
-      </div>
-    );
+    if (!muted) {
+      playSoundOff();
+    } else {
+      playSoundOn();
+    }
   };
 
-export default MuteSwitch
+  return (
+    <div className="flex items-center group">
+      <a
+        className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
+                   transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
+                   hover:scale-105 hover:shadow-xl z-50"
+        onClick={handleClick}
+      >
+        {muted ? (
+          <i className="fa-solid fa-volume-xmark text-gray-700 dark:text-offwhite text-xl"></i>
+        ) : (
+          <i className="fa-solid fa-volume-high text-gray-700 dark:text-offwhite text-xl"></i>
+        )}
+      </a>
+    </div>
+  );
+};
+
+export default MuteSwitch;
