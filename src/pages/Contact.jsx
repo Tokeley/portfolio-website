@@ -4,7 +4,6 @@ import { RiMailLine, RiCheckLine } from "react-icons/ri";
 import emailjs from 'emailjs-com';
 import { useState } from 'react';
 import { Field } from "@/components/ui/field"
-import useSound from 'use-sound';
 import { SoundContext } from '../contexts/SoundContext';
 
 const Contact = () => {
@@ -17,8 +16,8 @@ const Contact = () => {
   });
 
   const { muted, setMuted } = useContext(SoundContext);
-  const [playSendEmail] = useSound('/resources/audio/SendEmail.mp3');
-  const [playEmailSent] = useSound('/resources/audio/EmailSent.mp3');
+  const sendEmailSound = new Audio('/resources/audio/SendEmail.mp3');
+  const emailSentSound = new Audio('/resources/audio/EmailSent.mp3');
 
   const [submitted, setSubmitted] = useState(false); // Added state to track submission status
 
@@ -40,7 +39,9 @@ const Contact = () => {
       subject: formData.subject,
       message: formData.message,
     };
-    if ( !muted ) { playSendEmail() };
+    if ( !muted ) {
+      sendEmailSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
+     };
 
     emailjs.send(
       'service_t1pv2nb',  
@@ -50,7 +51,9 @@ const Contact = () => {
     )
     .then((response) => {
       console.log('Email sent successfully:', response);
-      if ( !muted ) {playEmailSent()};
+      if ( !muted ) {
+        emailSentSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
+      };
       setSubmitted(true); 
     })
     .catch((error) => {

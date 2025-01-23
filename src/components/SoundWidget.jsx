@@ -14,7 +14,7 @@ const SoundWidget = () => {
   const { muted } = useContext(SoundContext);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // Track index
   const [bgMusic, setBgMusic] = useState(new Audio(tracks[0].src)); // Initial audio object
-  const [playClick] = useSound('/resources/audio/Click.mp3');
+  const clickSound = new Audio("/resources/audio/Click.mp3");
 
   const play = () => {
     bgMusic.play().catch((error) => {
@@ -27,7 +27,7 @@ const SoundWidget = () => {
   };
 
   const changeTrack = (direction) => {
-    playClick();
+    clickSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
     stop(); // Stop current track
     const newIndex =
       direction === "next"

@@ -1,19 +1,22 @@
 import React, { useContext, useRef } from 'react'
 import { DarkModeContext } from '../contexts/DarkModeContext';
 import { SoundContext } from '../contexts/SoundContext';
-import useSound from 'use-sound';
 
 const DarkModeSwitch = () => {
   const { darkModeOn, setDarkModeOn } = useContext(DarkModeContext);
   const { muted, setMuted } = useContext(SoundContext);
-  const [playLightOn] = useSound('/resources/audio/LightOn.mp3');
-  const [playLightOff] = useSound('/resources/audio/LightOff.mp3');
+  const lightOn = new Audio("/resources/audio/LightOn.mp3");
+  const lightOff = new Audio("/resources/audio/LightOff.mp3");
 
   const handleClick = () => { 
     setDarkModeOn((prevMode) => !prevMode)
 
     if ( !muted ) {
-      darkModeOn ? playLightOff() : playLightOn();
+      if (darkModeOn){
+        lightOff.play().catch((error) => { console.error("Failed to play sound on:", error); });
+      } else {
+        lightOn.play().catch((error) => { console.error("Failed to play sound off:", error); });
+      }
     }
   }
 
