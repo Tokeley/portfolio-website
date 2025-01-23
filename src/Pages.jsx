@@ -18,7 +18,7 @@ const Pages = ({ bgOpacity }) => {
 
   return (
     <div
-    className='pb-40'
+    className='sm:pb-0 pb-40'
       style={{
         backgroundColor: `var(--dynamic-bg-color)`,
         '--dynamic-bg-color': backgroundColor,
