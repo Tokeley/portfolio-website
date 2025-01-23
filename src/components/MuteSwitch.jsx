@@ -5,8 +5,8 @@ import { SoundContext } from '../contexts/SoundContext';
 const MuteSwitch = () => {
   const { muted, setMuted } = useContext(SoundContext);
 
-  const [playSoundOn] = useSound('/resources/audio/SoundOn.mp3');
-  const [playSoundOff] = useSound('/resources/audio/SoundOff.mp3');
+  const [playSoundOn] = useSound("/resources/audio/SoundOn.mp3");
+  const [playSoundOff] = useSound("/resources/audio/SoundOff.mp3");
 
   const handleClick = () => {
     setMuted(!muted);
