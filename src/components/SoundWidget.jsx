@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
+import useSound from 'use-sound';
 
 // Array of audio tracks
 const tracks = [
@@ -13,6 +14,7 @@ const SoundWidget = () => {
   const { muted } = useContext(SoundContext);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // Track index
   const [bgMusic, setBgMusic] = useState(new Audio(tracks[0].src)); // Initial audio object
+  const [playClick] = useSound('/resources/audio/Click.mp3');
 
   const play = () => {
     bgMusic.play().catch((error) => {
@@ -25,6 +27,7 @@ const SoundWidget = () => {
   };
 
   const changeTrack = (direction) => {
+    playClick();
     stop(); // Stop current track
     const newIndex =
       direction === "next"

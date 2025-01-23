@@ -1,8 +1,11 @@
+import { useContext  } from 'react';
 import { Input, Textarea, Button } from '@chakra-ui/react';
 import { RiMailLine, RiCheckLine } from "react-icons/ri";
 import emailjs from 'emailjs-com';
 import { useState } from 'react';
 import { Field } from "@/components/ui/field"
+import useSound from 'use-sound';
+import { SoundContext } from '../contexts/SoundContext';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +15,10 @@ const Contact = () => {
     subject: '',
     message: '',
   });
+
+  const { muted, setMuted } = useContext(SoundContext);
+  const [playSendEmail] = useSound('/resources/audio/SendEmail.mp3');
+  const [playEmailSent] = useSound('/resources/audio/EmailSent.mp3');
 
   const [submitted, setSubmitted] = useState(false); // Added state to track submission status
 
@@ -33,6 +40,7 @@ const Contact = () => {
       subject: formData.subject,
       message: formData.message,
     };
+    if ( !muted ) { playSendEmail() };
 
     emailjs.send(
       'service_t1pv2nb',  
@@ -42,6 +50,7 @@ const Contact = () => {
     )
     .then((response) => {
       console.log('Email sent successfully:', response);
+      if ( !muted ) {playEmailSent()};
       setSubmitted(true); 
     })
     .catch((error) => {
