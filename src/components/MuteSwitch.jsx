@@ -5,16 +5,18 @@ import { SoundContext } from '../contexts/SoundContext';
 const MuteSwitch = () => {
   const { muted, setMuted } = useContext(SoundContext);
 
-  const [playSoundOn] = useSound("/resources/audio/SoundOn.mp3");
-  const [playSoundOff] = useSound("/resources/audio/SoundOff.mp3");
+  // const [playSoundOn] = useSound("/resources/audio/SoundOn.mp3");
+  // const [playSoundOff] = useSound("/resources/audio/SoundOff.mp3");
+  const soundOn = new Audio("/resources/audio/SoundOn.mp3");
+  const soundOff = new Audio("/resources/audio/SoundOff.mp3");
 
   const handleClick = () => {
     setMuted(!muted);
 
     if (!muted) {
-      playSoundOff();
+      soundOn.play().catch((error) => { console.error("Failed to play sound on:", error); });
     } else {
-      playSoundOn();
+      soundOff.play().catch((error) => { console.error("Failed to play sound off:", error); });
     }
   };
 
