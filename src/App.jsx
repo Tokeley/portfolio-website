@@ -45,7 +45,7 @@ const App = () => {
     const checkIfMobile = () => {
       let details = navigator.userAgent; 
       let regexp = /android|iphone|kindle|ipad/i; 
-      let isMobileDevice = regexp.test(details); 
+      let isMobileDevice = regexp.test(details) || window.innerWidth < 768;
       setIsMobile(isMobileDevice);
     };
 
