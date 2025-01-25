@@ -15,7 +15,7 @@ const Contact = () => {
     message: '',
   });
 
-  const { muted, setMuted } = useContext(SoundContext);
+  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
   const sendEmailSound = new Audio('/resources/audio/SendEmail.mp3');
   const emailSentSound = new Audio('/resources/audio/EmailSent.mp3');
 
@@ -39,7 +39,7 @@ const Contact = () => {
       subject: formData.subject,
       message: formData.message,
     };
-    if ( !muted ) {
+    if ( !muted && !isMobile ) {
       sendEmailSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
      };
 
@@ -51,7 +51,7 @@ const Contact = () => {
     )
     .then((response) => {
       console.log('Email sent successfully:', response);
-      if ( !muted ) {
+      if ( !muted && !isMobile ) {
         emailSentSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
       };
       setSubmitted(true); 

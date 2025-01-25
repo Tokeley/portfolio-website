@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
 
 const MuteSwitch = () => {
-  const { muted, setMuted } = useContext(SoundContext);
+  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
 
   const soundOn = new Audio("/resources/audio/SoundOn.mp3");
   const soundOff = new Audio("/resources/audio/SoundOff.mp3");
@@ -10,7 +10,7 @@ const MuteSwitch = () => {
   const handleClick = () => {
     setMuted(!muted);
 
-    if (!muted) {
+    if (!muted && !isMobile) {
       soundOff.play().catch((error) => { console.error("Failed to play sound on:", error); });
     } else {
       soundOn.play().catch((error) => { console.error("Failed to play sound off:", error); });

@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SoundProvider } from './contexts/SoundContext';
 import Navigation from './components/Navigation';
 import NavigationMobile from './components/NavigationMobile';
 import FlowfieldBackground from './components/FlowfieldBackground';
 import Pages from './Pages';
 import Header from './components/Header';
 import { DarkModeContext } from './contexts/DarkModeContext';
+import { SoundContext } from './contexts/SoundContext';
 
 const App = () => {
   const [bgOpacity, setBgOpacity] = useState(0.3);
   const { darkModeOn, setDarkModeOn } = useContext( DarkModeContext );
+  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
 
   useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -40,22 +41,32 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const checkIfMobile = () => {
+      let details = navigator.userAgent; 
+      let regexp = /android|iphone|kindle|ipad/i; 
+      let isMobileDevice = regexp.test(details); 
+      setIsMobile(isMobileDevice);
+    };
+
+    checkIfMobile();
+  }, []);
+
+
   return (
-    <SoundProvider>
-        <div className="relative">
-          <FlowfieldBackground />
-          <div className="hidden lg:block">
-            <Navigation />
-          </div>
-          <div className="block lg:hidden">
-            <NavigationMobile />
-          </div>
-          <Header/>
-          <div className="relative z-10">
-            <Pages bgOpacity={bgOpacity} />
-          </div>
-        </div>
-    </SoundProvider>
+    <div className="relative">
+      <FlowfieldBackground />
+      <div className="hidden lg:block">
+        <Navigation />
+      </div>
+      <div className="block lg:hidden">
+        <NavigationMobile />
+      </div>
+      <Header/>
+      <div className="relative z-10">
+        <Pages bgOpacity={bgOpacity} />
+      </div>
+    </div>
   );
 };
 

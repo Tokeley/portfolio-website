@@ -4,14 +4,14 @@ import { SoundContext } from '../contexts/SoundContext';
 
 const DarkModeSwitch = () => {
   const { darkModeOn, setDarkModeOn } = useContext(DarkModeContext);
-  const { muted, setMuted } = useContext(SoundContext);
+  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
   const lightOn = new Audio("/resources/audio/LightOn.mp3");
   const lightOff = new Audio("/resources/audio/LightOff.mp3");
 
   const handleClick = () => { 
     setDarkModeOn((prevMode) => !prevMode)
 
-    if ( !muted ) {
+    if ( !muted && !isMobile ) {
       if (darkModeOn){
         lightOff.play().catch((error) => { console.error("Failed to play sound on:", error); });
       } else {
@@ -37,6 +37,7 @@ const DarkModeSwitch = () => {
           <i className="fa-solid fa-sun text-gray-700 dark:text-offwhite text-xl"></i>
         )}
       </a>
+      { isMobile ? <p>MOBILE</p> : <p>DESKTOP</p> }
     </div>
   );
 };
