@@ -12,7 +12,7 @@ const MuteSwitch = () => {
 
     if (!muted && !isMobile) {
       soundOff.play().catch((error) => { console.error("Failed to play sound on:", error); });
-    } else {
+    } else if (!isMobile) {
       soundOn.play().catch((error) => { console.error("Failed to play sound off:", error); });
     }
   };
