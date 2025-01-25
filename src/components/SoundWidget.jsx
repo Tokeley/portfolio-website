@@ -14,6 +14,11 @@ const SoundWidget = () => {
   const [bgMusic, setBgMusic] = useState(new Audio(tracks[0].src)); // Initial audio object
   const clickSound = new Audio("/resources/audio/Click.mp3");
 
+  useEffect(() => {
+    bgMusic.volume = 0.3;
+    bgMusic.loop = true;
+  }, []);
+
   const play = () => {
     bgMusic.play().catch((error) => {
       console.error("Failed to play bg music:", error);
@@ -39,6 +44,7 @@ const SoundWidget = () => {
     const newTrack = new Audio(tracks[newIndex].src);
     newTrack.loop = true;
     newTrack.volume = 0.3;
+    newTrack.loop = true;
     setBgMusic(newTrack); // Update audio object
   };
 
