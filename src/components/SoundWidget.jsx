@@ -5,10 +5,7 @@ import SoundInfo from './SoundInfo';
 
 // Array of audio tracks
 const tracks = [
-  { title: "Calm Soul", src: "/resources/audio/calm_soul.mp3" },
-  { title: "Ocean Waves", src: "/resources/audio/ocean_waves.mp3" },
-  { title: "Rain Ambience", src: "/resources/audio/rain_ambience.mp3" },
-  { title: "Room Ambience", src: "/resources/audio/room_ambience.mp3" },
+  { title: "Fleeting Hope", src: "/resources/audio/Fleeting-Hope.mp3" },
 ];
 
 const SoundWidget = () => {
