@@ -27,7 +27,7 @@ const SoundWidget = () => {
   };
 
   const changeTrack = (direction) => {
-    if (!muted){
+    if (!isMobile){
       clickSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
     }
     stop(); // Stop current track
