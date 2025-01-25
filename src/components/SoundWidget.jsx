@@ -76,7 +76,7 @@ const SoundWidget = () => {
   }, [isMobile, muted, bgMusic]);
 
   return (
-    <div className="flex items-center">
+    <div className="flex flex-grow items-center">
       <div className="mx-4 sm:mx-0 flex-grow sm:w-60 w-full h-max border border-gray-700 flex items-center justify-between p-2 backdrop-blur-lg">
         <i
           className="fa-solid fa-backward text-gray-700 cursor-pointer"
@@ -90,8 +90,9 @@ const SoundWidget = () => {
           onClick={() => changeTrack("next")}
         ></i>
       </div>
-
-      <SoundInfo />
+      {
+        !isMobile ? (<SoundInfo />) : <></>
+      }
     </div>
   );
 };
