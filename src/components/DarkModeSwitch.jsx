@@ -8,6 +8,9 @@ const DarkModeSwitch = () => {
   const lightOn = new Audio("/resources/audio/LightOn.mp3");
   const lightOff = new Audio("/resources/audio/LightOff.mp3");
 
+  lightOn.volume = 0.3;
+  lightOff.volume = 0.3;
+
   const handleClick = () => { 
     setDarkModeOn((prevMode) => !prevMode)
 

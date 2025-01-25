@@ -28,8 +28,10 @@ const SoundWidget = () => {
   };
 
   const changeTrack = (direction) => {
-    if (!isMobile){
-      clickSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
+    if (!isMobile) {
+      clickSound.play().catch((error) => {
+        console.error("Failed to play sound on:", error);
+      });
     }
     stop(); // Stop current track
     const newIndex =
@@ -57,8 +59,24 @@ const SoundWidget = () => {
     };
   }, [muted, bgMusic]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        stop();
+      } else if (!muted && document.visibilityState === 'visible') {
+        play();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isMobile, muted, bgMusic]);
+
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <div className="mx-4 sm:mx-0 flex-grow sm:w-60 w-full h-max border border-gray-700 flex items-center justify-between p-2 backdrop-blur-lg">
         <i
           className="fa-solid fa-backward text-gray-700 cursor-pointer"
@@ -74,7 +92,6 @@ const SoundWidget = () => {
       </div>
 
       <SoundInfo />
-
     </div>
   );
 };
