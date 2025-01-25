@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
 import useSound from 'use-sound';
+import SoundInfo from './SoundInfo';
 
 // Array of audio tracks
 const tracks = [
@@ -57,18 +58,23 @@ const SoundWidget = () => {
   }, [muted, bgMusic]);
 
   return (
-    <div className="mx-4 sm:mx-0 flex-grow sm:w-60 w-full h-max border border-gray-700 flex items-center justify-between p-2 backdrop-blur-lg">
-      <i
-        className="fa-solid fa-backward text-gray-700 cursor-pointer"
-        onClick={() => changeTrack("previous")}
-      ></i>
-      <p className="text-gray-700 dark:text-offwhite truncate">
-        {tracks[currentTrackIndex].title}
-      </p>
-      <i
-        className="fa-solid fa-forward text-gray-700 cursor-pointer"
-        onClick={() => changeTrack("next")}
-      ></i>
+    <div className='flex items-center'>
+      <div className="mx-4 sm:mx-0 flex-grow sm:w-60 w-full h-max border border-gray-700 flex items-center justify-between p-2 backdrop-blur-lg">
+        <i
+          className="fa-solid fa-backward text-gray-700 cursor-pointer"
+          onClick={() => changeTrack("previous")}
+        ></i>
+        <p className="text-gray-700 dark:text-offwhite truncate">
+          {tracks[currentTrackIndex].title}
+        </p>
+        <i
+          className="fa-solid fa-forward text-gray-700 cursor-pointer"
+          onClick={() => changeTrack("next")}
+        ></i>
+      </div>
+
+      <SoundInfo />
+
     </div>
   );
 };
