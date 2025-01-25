@@ -37,6 +37,7 @@ const DarkModeSwitch = () => {
           <i className="fa-solid fa-sun text-gray-700 dark:text-offwhite text-xl"></i>
         )}
       </a>
+      { isMobile ? <p>MOBILE</p> : <p>DESKTOP</p> }
     </div>
   );
 };
