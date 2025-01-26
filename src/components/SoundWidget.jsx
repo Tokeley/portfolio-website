@@ -6,6 +6,7 @@ import SoundInfo from './SoundInfo';
 // Array of audio tracks
 const tracks = [
   { title: "Fleeting Hope", src: "/resources/audio/Fleeting-Hope.mp3" },
+  { title: "Fractal River", src: "/resources/audio/Fractal-River.mp3" },
 ];
 
 const SoundWidget = () => {
@@ -15,7 +16,8 @@ const SoundWidget = () => {
   const clickSound = new Audio("/resources/audio/Click.mp3");
 
   useEffect(() => {
-    bgMusic.volume = 0.3;
+    clickSound.volume = 0.4;
+    bgMusic.volume = 0.5;
     bgMusic.loop = true;
   }, []);
 
@@ -31,6 +33,7 @@ const SoundWidget = () => {
 
   const changeTrack = (direction) => {
     if (!isMobile) {
+      clickSound.volume = 0.4;
       clickSound.play().catch((error) => {
         console.error("Failed to play sound on:", error);
       });
@@ -43,7 +46,7 @@ const SoundWidget = () => {
     setCurrentTrackIndex(newIndex);
     const newTrack = new Audio(tracks[newIndex].src);
     newTrack.loop = true;
-    newTrack.volume = 0.3;
+    newTrack.volume = 0.5;
     newTrack.loop = true;
     setBgMusic(newTrack); // Update audio object
   };
