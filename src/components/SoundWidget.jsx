@@ -5,8 +5,9 @@ import SoundInfo from './SoundInfo';
 
 // Array of audio tracks
 const tracks = [
-  { title: "Fleeting Hope", src: "/resources/audio/Fleeting-Hope.mp3" },
+  { title: "Ethereal Forest", src: "/resources/audio/Ethereal-Forest.mp3" },
   { title: "Fractal River", src: "/resources/audio/Fractal-River.mp3" },
+  { title: "Calm Park", src: "/resources/audio/Calm-Park.mp3" },
 ];
 
 const SoundWidget = () => {
@@ -17,7 +18,7 @@ const SoundWidget = () => {
 
   useEffect(() => {
     clickSound.volume = 0.4;
-    bgMusic.volume = 0.5;
+    bgMusic.volume = 0.6;
     bgMusic.loop = true;
   }, []);
 

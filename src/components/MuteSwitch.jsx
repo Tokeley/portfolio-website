@@ -6,6 +6,8 @@ const MuteSwitch = () => {
 
   const soundOn = new Audio("/resources/audio/SoundOn.mp3");
   const soundOff = new Audio("/resources/audio/SoundOff.mp3");
+  soundOn.volume = 0.6;
+  soundOff.volume = 0.6;
 
   const handleClick = () => {
     setMuted(!muted);
