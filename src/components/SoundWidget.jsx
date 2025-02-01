@@ -14,6 +14,7 @@ const SoundWidget = () => {
   const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // Track index
   const [bgMusic, setBgMusic] = useState(new Audio(tracks[0].src)); // Initial audio object
+  const [loading, setLoading] = useState(true);
   const clickSound = new Audio("/resources/audio/Click.mp3");
 
   useEffect(() => {
@@ -23,9 +24,12 @@ const SoundWidget = () => {
   }, []);
 
   const play = () => {
-    bgMusic.play().catch((error) => {
-      console.error("Failed to play bg music:", error);
-    });
+    bgMusic
+      .play()
+      .then(() => setLoading(false))
+      .catch((error) => {
+        console.error("Failed to play bg music:", error);
+      });
   };
 
   const stop = () => {
@@ -40,6 +44,7 @@ const SoundWidget = () => {
       });
     }
     stop(); // Stop current track
+    setLoading(true);
     const newIndex =
       direction === "next"
         ? (currentTrackIndex + 1) % tracks.length // Cycle forward
@@ -89,9 +94,13 @@ const SoundWidget = () => {
           className="fa-solid fa-backward text-gray-700 cursor-pointer"
           onClick={() => changeTrack("previous")}
         ></i>
-        <p className="text-gray-700 dark:text-offwhite truncate">
-          {tracks[currentTrackIndex].title}
-        </p>
+        {loading ? (
+          <div className="w-4 h-4 border-2 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
+        ) : (
+          <p className="text-gray-700 dark:text-offwhite truncate">
+            {tracks[currentTrackIndex].title}
+          </p>
+        )}
         <i
           className="fa-solid fa-forward text-gray-700 cursor-pointer"
           onClick={() => changeTrack("next")}
