@@ -10,14 +10,14 @@ const tracks = [
   { title: "Calm Park", src: "/resources/audio/Calm-Park.mp3" },
 ];
 
-const SoundWidget = () => {
+const SoundWidget = ({currentTrackIndex, setCurrentTrackIndex}) => {
   const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // Track index
-  const [bgMusic, setBgMusic] = useState(new Audio(tracks[0].src)); // Initial audio object
+  const [bgMusic, setBgMusic] = useState(new Audio(tracks[currentTrackIndex].src)); // Initial audio object
   const [loading, setLoading] = useState(true);
   const clickSound = new Audio("/resources/audio/Click.mp3");
 
   useEffect(() => {
+
     clickSound.volume = 0.4;
     bgMusic.volume = 0.6;
     bgMusic.loop = true;
