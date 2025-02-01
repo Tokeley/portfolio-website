@@ -51,7 +51,6 @@ const SoundWidget = () => {
         : (currentTrackIndex - 1 + tracks.length) % tracks.length; // Cycle backward
     setCurrentTrackIndex(newIndex);
     const newTrack = new Audio(tracks[newIndex].src);
-    newTrack.loop = true;
     newTrack.volume = 0.5;
     newTrack.loop = true;
     setBgMusic(newTrack); // Update audio object
@@ -95,7 +94,7 @@ const SoundWidget = () => {
           onClick={() => changeTrack("previous")}
         ></i>
         {loading ? (
-          <div className="w-4 h-4 border-2 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-6 h-6 border-2 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
         ) : (
           <p className="text-gray-700 dark:text-offwhite truncate">
             {tracks[currentTrackIndex].title}
