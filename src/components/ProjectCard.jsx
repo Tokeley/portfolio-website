@@ -7,7 +7,7 @@ const ProjectCard = ({ project }) => {
         direction={{ base: "column", lg: "row" }} // Switch direction based on screen size
         overflow=""
         width="full"
-        className="group hover:scale-105 hover:cursor-default transition-all duration-300 rounded-lg shadow-md mb-4 bg-white/70 dark:bg-gray-800/70 dark:hover:bg-gray-800 hover:bg-white"
+        className="group xl:h-56 lg:h-44 hover:scale-105 hover:cursor-default transition-all duration-300 rounded-lg shadow-md mb-4 bg-white/70 dark:bg-gray-800/70 dark:hover:bg-gray-800 hover:bg-white"
       >
         <Box
           padding={4}
@@ -82,7 +82,7 @@ const ProjectCard = ({ project }) => {
 
 
           </Box>
-          <Box className="lg:text-md text-xs font-montserratLight text-gray-600 dark:text-gray-300">
+          <Box className=" lg:text-md text-sm font-montserratLight text-gray-600 dark:text-gray-300">
             {project.description}
           </Box>
           <HStack mt={2} spacing={2} className="flex-wrap">
