@@ -7,7 +7,7 @@ const ProjectCard = ({ project }) => {
         direction={{ base: "column", lg: "row" }} // Switch direction based on screen size
         overflow=""
         width="full"
-        className="group xl:h-56 lg:h-44 hover:scale-105 hover:cursor-default transition-all duration-300 rounded-lg shadow-md mb-4 bg-white/70 dark:bg-gray-800/70 dark:hover:bg-gray-800 hover:bg-white"
+        className="group xl:h-56 lg:h-44 md:hover:scale-105 hover:cursor-default transition-all duration-300 rounded-lg shadow-md mb-4 bg-white/70 dark:bg-gray-800/70 dark:hover:bg-gray-800 hover:bg-white"
       >
         <Box
           padding={4}
@@ -44,14 +44,14 @@ const ProjectCard = ({ project }) => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <div className="w-36 shadow-md hover:cursor-pointer hover:scale-105 rounded-md ml-3 border border-gray-700 flex items-center px-2 backdrop-blur-lg md:opacity-0 md:translate-x-8 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-300">
+                  <div className="sm:w-36 shadow-md hover:cursor-pointer hover:scale-105 rounded-md ml-3 md:mr-3  border border-gray-700 flex items-center px-2 backdrop-blur-lg md:opacity-0 md:translate-x-8 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-300">
                     <p
                       
                       className="text-md font-montserratMedium text-gray-700 dark:text-offwhite flex-grow text-center"
                     >
                       Code
                     </p>
-                    <i className="fa fa-code text-gray-700 dark:text-offwhite text-md ml-auto"></i>
+                    <i className="ml-2 fa fa-code text-gray-700 dark:text-offwhite text-md md:ml-auto"></i>
                   </div>
                 </a>
               )}
@@ -63,13 +63,13 @@ const ProjectCard = ({ project }) => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <div className="w-36 shadow-md hover:cursor-pointer hover:scale-105 rounded-md ml-0 md:ml-3 mr-3 md:mr-0 border border-gray-700 flex items-center px-2 backdrop-blur-lg md:opacity-0 md:translate-x-8 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-300">
+                  <div className="sm:w-36 shadow-md hover:cursor-pointer hover:scale-105 rounded-md md:ml-3 mr-3 border border-gray-700 flex items-center px-2 backdrop-blur-lg md:opacity-0 md:translate-x-8 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-300">
                     <p
                       className="text-md font-montserratMedium text-gray-700 dark:text-offwhite flex-grow text-center"
                     >
                       {project.liveLinkText}
                     </p>
-                    <i className="fa fa-signal text-gray-700 dark:text-offwhite text-md ml-auto"></i>
+                    <i className=" ml-2 fa fa-signal text-gray-700 dark:text-offwhite text-md md:ml-auto"></i>
                   </div>
                 </a>
               )}
