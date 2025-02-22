@@ -15,9 +15,9 @@ import {
 const experiences = [
   {
     id: 1,
-    date: 'November, 2024 - Present',
+    date: 'November, 2024 - Feburary, 2025',
     title: 'Software Engineer Intern • Serato',
-    description: `At Serato I am contributing to the implementation and testing of new features within hardware mapping and our music production software.`,
+    description: `At Serato I implemented new features and fixed bugs for their beat making application, Studio. The bulk of the work I did was on a hardware messaging system that allowed Studio to communicate with external devices. My responsibilities also included writing unit tests, code reviews, and documentation.`,
     technologies: ['C++', 'QT', 'Python', 'Azure DevOps']
   },
   {
