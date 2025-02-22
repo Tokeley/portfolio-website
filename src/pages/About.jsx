@@ -1,7 +1,7 @@
 const stats = [
   { label: "Creating:", value: "This website", link: "https://github.com/Tokeley/portfolio-website"},
-  { label: "Working at:", value: "Serato Audio Research Lab", link: "https://serato.com/"}, 
-  { label: "Reading:", value: "Brave New World", link: "https://en.wikipedia.org/wiki/Brave_New_World"},
+  { label: "Studying at:", value: "Victoria University", link: "https://www.wgtn.ac.nz/"}, 
+  { label: "Reading:", value: "A History of The World in 47 Borders", link: "https://www.youtube.com/watch?v=MkXHsq0gqrQ"},
 ]
 
 
