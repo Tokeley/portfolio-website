@@ -45,7 +45,7 @@ const About = () => {
               </div>
             </div>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
-            <a href="/resources/Alex_Manning_CV_2024.pdf" target="_blank" rel="noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
+            <a href="/resources/Alex_Manning_Resume_2025.pdf" target="_blank" rel="noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
                 <i className="fa fa-file text-gray-700 dark:text-offwhite lg:text-xl text-base"></i>
                 <p className='ml-2 lg:text-xl text-base font-montserratMedium text-gray-700 dark:text-offwhite p-2'>
                     Resume
