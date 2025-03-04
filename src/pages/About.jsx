@@ -18,10 +18,10 @@ const About = () => {
               Software Engineer • Musician • Student
             </p>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
-            <a href="https://www.google.com/maps/place/Auckland/@-36.8596971,174.5413126,11z/data=!3m1!4b1!4m6!3m5!1s0x6d0d47fb5a9ce6fb:0x500ef6143a29917!8m2!3d-36.8508827!4d174.7644881!16zL20vMDEydHM?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
+            <a href="https://www.google.com/maps/place/wellington/data=!4m2!3m1!1s0x6d38b1fc49e974cb:0xa00ef63a213b470?sa=X&ved=1t:155783&ictx=111" target="_blank" rel="noopener noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
               <i className="fa fa-map-marker-alt text-gray-700 dark:text-offwhite lg:text-xl text-base"></i>
               <p className='ml-2 lg:text-xl text-base font-montserratMedium text-gray-700 dark:text-offwhite p-2'>
-                Auckland, New Zealand
+                Wellington, New Zealand
               </p>
               <i className="fa fa-arrow-right text-gray-700 dark:text-offwhite lg:text-xl text-base pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300"></i>
             </a>
