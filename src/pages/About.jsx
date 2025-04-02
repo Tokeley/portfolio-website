@@ -1,5 +1,5 @@
 const stats = [
-  { label: "Creating:", value: "This website", link: "https://github.com/Tokeley/portfolio-website"},
+  { label: "Creating:", value: "MEAP", link: "https://tokeley.github.io/MeapLog/#/"},
   { label: "Studying at:", value: "Victoria University", link: "https://www.wgtn.ac.nz/"}, 
   { label: "Reading:", value: "A History of The World in 47 Borders", link: "https://www.youtube.com/watch?v=MkXHsq0gqrQ"},
 ]
