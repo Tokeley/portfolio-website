@@ -42,3 +42,11 @@ code {
   font-family: 'InterRegular';
   src: url('./fonts/inter/Inter-Regular.woff2') format('opentype');
 }
+
+@font-face {
+  font-family: 'FrancyFont';
+  src: url('./fonts/Francy.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
