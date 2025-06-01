@@ -11,6 +11,7 @@ module.exports = {
         montserratMedium: ['MontserratMedium', 'sans-serif'],
         montserratLight: ['MontserratLight', 'sans-serif'],
         interRegular: ['InterRegular', 'sans-serif'],
+        francy: ['FrancyFont', 'sans-serif'],
       },
       colors: {
         offwhite: '#f5f5f5',
