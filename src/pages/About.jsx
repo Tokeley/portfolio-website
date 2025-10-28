@@ -1,7 +1,7 @@
 const stats = [
   { label: "Creating:", value: "MEAP", link: "https://meap-log.vercel.app/"},
-  { label: "Studying at:", value: "Victoria University", link: "https://www.wgtn.ac.nz/"}, 
-  { label: "Reading:", value: "A History of The World in 47 Borders", link: "https://www.youtube.com/watch?v=MkXHsq0gqrQ"},
+  { label: "Travelling in:", value: "Japan", link: "https://www.google.com/maps/place/Japan/@33.0468744,126.5425668,3325942m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34674e0fd77f192f:0xf54275d47c665244!8m2!3d36.204824!4d138.252924!16zL20vMDNfM2Q?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D"}, 
+  { label: "Reading:", value: "The Hitchhiker's Guide to the Galaxy", link: "https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy"},
 ]
 
 
