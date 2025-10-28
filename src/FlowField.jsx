@@ -36,22 +36,22 @@ const FlowField = () => {
         for (let i = 0; i < num; i++) {
           let particle = particles[i];
 
-          // Sunset palette based on vertical position (top -> bottom)
+          // Nature green palette based on vertical position (top -> bottom)
           const t = p.constrain(particle.y / p.height, 0, 1);
-          const sunsetStops = [
-            { at: 0.0,  c: p.color(46, 2, 105) },   // deep violet
-            { at: 0.35, c: p.color(124, 58, 237) }, // violet
-            { at: 0.55, c: p.color(236, 72, 153) }, // pink
-            { at: 0.75, c: p.color(249, 115, 22) }, // orange
-            { at: 1.0,  c: p.color(253, 224, 71) }  // gold
+          const greenStops = [
+            { at: 0.0,  c: p.color(10, 44, 30) },   // deep forest
+            { at: 0.30, c: p.color(20, 83, 45) },   // forest
+            { at: 0.55, c: p.color(5, 150, 105) },  // emerald
+            { at: 0.75, c: p.color(101, 163, 13) }, // moss
+            { at: 1.0,  c: p.color(190, 242, 100) } // sunlit lime
           ];
 
-          let lower = sunsetStops[0];
-          let upper = sunsetStops[sunsetStops.length - 1];
-          for (let s = 0; s < sunsetStops.length - 1; s++) {
-            if (t >= sunsetStops[s].at && t <= sunsetStops[s + 1].at) {
-              lower = sunsetStops[s];
-              upper = sunsetStops[s + 1];
+          let lower = greenStops[0];
+          let upper = greenStops[greenStops.length - 1];
+          for (let s = 0; s < greenStops.length - 1; s++) {
+            if (t >= greenStops[s].at && t <= greenStops[s + 1].at) {
+              lower = greenStops[s];
+              upper = greenStops[s + 1];
               break;
             }
           }
@@ -63,9 +63,9 @@ const FlowField = () => {
           const edgeFactor = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
           const brightnessBoost = p.map(edgeFactor, 0, p.width / 3, -40, 30);
 
-          let r = p.constrain(p.red(baseColor) + brightnessBoost, 0, 255);
-          let g = p.constrain(p.green(baseColor) + brightnessBoost * 0.6, 0, 255);
-          let b = p.constrain(p.blue(baseColor) + brightnessBoost * 0.2, 0, 255);
+          let r = p.constrain(p.red(baseColor) + brightnessBoost * 0.3, 0, 255);
+          let g = p.constrain(p.green(baseColor) + brightnessBoost * 0.9, 0, 255);
+          let b = p.constrain(p.blue(baseColor) + brightnessBoost * 0.3, 0, 255);
 
           // Calculate distance to the nearest edge and map it to opacity
           let distanceToEdge = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
