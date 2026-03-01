@@ -15,20 +15,27 @@ import {
 const experiences = [
   {
     id: 1,
+    date: 'Janurary, 2026 - Present',
+    title: 'Software Engineer • Serato',
+    description: `As a graduate software engineer at Serato, I am working on the Studio, DJ and other high performant music software products. My work involes planning, implementing and testing new features often with strict performance and quality requirements.`,
+    technologies: ['C++', 'QT', 'Python', 'Azure DevOps']
+  },
+  {
+    id: 2,
     date: 'November, 2024 - Feburary, 2025',
     title: 'Software Engineer Intern • Serato',
     description: `At Serato I implemented new features and fixed bugs for their beat making application, Studio. The bulk of the work I did was on a hardware messaging system that allowed Studio to communicate with external devices. My responsibilities also included writing unit tests, code reviews, and documentation.`,
     technologies: ['C++', 'QT', 'Python', 'Azure DevOps']
   },
   {
-    id: 2,
+    id: 3,
     date: 'December, 2023 - Feburary, 2024',
     title: 'Software Engineer Intern • NOW',
     description: `At NOW NZ, I developed and deployed an internal web application to streamline client and service information retrieval for technical support staff, improving operational efficiency and customer service delivery. I gained valuable CI/CD experience using Docker, Kubernetes, and Bitbucket Pipelines.`,
     technologies: ['JS','React', 'GraphQL', 'MUI', 'Docker', 'Bitbucket'] 
   },
   {
-    id: 3,
+    id: 4,
     date: 'Feburary, 2023 - November, 2024',
     title: 'Tutor • Victoria University of Wellington',
     description:
@@ -36,13 +43,13 @@ const experiences = [
     technologies: ['Java', 'Marking', 'Communication']
   },
   {
-    id: 4,
+    id: 5,
     date: 'July, 2018 - Feburary, 2022',
     title: 'Technician • MyDevice',
     description:
       "I oversaw order dispatch, storefront operations, and sales. I carried out laptop and industrial machinery repairs. Additionally, I managed the store database, maintaining accurate inventory, customer data, and sales records.",
     technologies: ['Customer Service', 'Laptop repair']
-  }
+  },
 ];
 
 const Experience = () => {
@@ -128,7 +135,7 @@ const Card = ({ id, title, description, date, technologies }) => {
       }}
     >
       <Box>
-        <Text color={isEvenId ? 'purple.400' : 'blue.400'} className="lg:text-sm text-xs font-montserratMedium text-gray-800 dark:text-gray-200">
+        <Text color={isEvenId ? 'green.600' : 'green.800'} className="lg:text-sm text-xs font-montserratMedium text-gray-800 dark:text-gray-200">
           {date}
         </Text>
 
