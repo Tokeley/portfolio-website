@@ -39,11 +39,11 @@ const FlowField = () => {
           // Nature green palette based on vertical position (top -> bottom)
           const t = p.constrain(particle.y / p.height, 0, 1);
           const greenStops = [
-            { at: 0.0,  c: p.color(10, 44, 30) },   // deep forest
-            { at: 0.30, c: p.color(20, 83, 45) },   // forest
-            { at: 0.55, c: p.color(5, 150, 105) },  // emerald
-            { at: 0.75, c: p.color(101, 163, 13) }, // moss
-            { at: 1.0,  c: p.color(190, 242, 100) } // sunlit lime
+            { at: 0.0,  c: p.color(0, 90, 50) },   // Green 1
+            { at: 0.30, c: p.color(35, 139, 69) },   // Green 2
+            { at: 0.55, c: p.color(65, 171, 93) },  // Green 3
+            { at: 0.75, c: p.color(116, 196, 118) }, // Green 4
+            { at: 1.0,  c: p.color(161, 217, 155) } // Green 5
           ];
 
           let lower = greenStops[0];
