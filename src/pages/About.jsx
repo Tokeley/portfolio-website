@@ -1,7 +1,7 @@
 const stats = [
   { label: "Creating:", value: "MEAP", link: "https://meap-log.vercel.app/"},
-  { label: "Travelling in:", value: "Japan", link: "https://www.google.com/maps/place/Japan/@33.0468744,126.5425668,3325942m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34674e0fd77f192f:0xf54275d47c665244!8m2!3d36.204824!4d138.252924!16zL20vMDNfM2Q?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D"}, 
-  { label: "Reading:", value: "The Hitchhiker's Guide to the Galaxy", link: "https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy"},
+  { label: "Working at:", value: "Serato", link: "https://serato.com/"}, 
+  { label: "Reading:", value: "Klara and the Sun", link: "https://en.wikipedia.org/wiki/Klara_and_the_Sun"},
 ]
 
 
@@ -15,7 +15,7 @@ const About = () => {
               Hi, I'm Alex
             </h2>
             <p className='lg:text-xl text-lg font-montserratLight text-gray-700 dark:text-offwhite p-2'>
-              Software Engineer • Musician • Student
+              Software Engineer • Musician
             </p>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
             <a href="https://www.google.com/maps/place/wellington/data=!4m2!3m1!1s0x6d38b1fc49e974cb:0xa00ef63a213b470?sa=X&ved=1t:155783&ictx=111" target="_blank" rel="noopener noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
@@ -57,13 +57,13 @@ const About = () => {
           <div className='lg:border-r-2 border-gray-400 dark:border-offwhite'></div>
           <div className='h-full lg:w-1/2  lg:ml-8 '>
             <p className='lg:text-base text-sm font-montserratLight pb-4'>
-              I am a developer who is passionate about crafting accessible and robust applications that solve problems and provide genuine value to the user. Every project I work on I make sure is as equally well designed as it is well engineered. I believe code can be just as beautiful as an aesthetic user interface. Currently I am studying Software Engineering at Victoria University of Wellington. Areas that I am interested to work within are audio software and web development.
+              I am a software engineer who loves working in music technology. Currently I am working at Serato in Auckland , New Zealand, where I am developing new features for world leading DJ and music production tools. 
             </p>
             <p className='lg:text-base text-sm  font-montserratLight font-light pb-4'>
-              This summer I was working as a Software Engineer intern at Serato, working on hardware mapping and music production software. I contributed to the implementation and testing of a new mapping framework as well as general bug fixes and code refactoring. Last summer I did an Internship at NOW Broadband in Napier. At NOW, I developed and deployed an internal web application to streamline client and service information retrieval for technical support staff, enhancing operational efficiency and customer service delivery. 
+              Last year I was completing my honours year for my software engineering degree at Victoria University of Wellington. My honours capstone project, MEAP, a Musical Mechatronic Ensemble Performance system was a software system that allowed for any musician to control any group of musical mechatronic instruments (aka a music robot band!). This project was featured in the Dean’s Presentation which showcases the year’s best projects to industry leaders.
             </p>
             <p className='lg:text-base text-sm font-montserratLight font-light pb-4'>
-              In my spare time, I’m usually going to the gym, mountain biking, making beats, or jamming on the bass guitar with my band mates. 
+              In my spare time, I’m usually playing tennis, mountain biking, making beats, or jamming on bass guitar with my band mates.
             </p>
           </div>
         </div>
