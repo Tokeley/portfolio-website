@@ -29,7 +29,6 @@ const experiences = [
   },
   {
     id: 3,
-    id: 3,
     date: 'December, 2023 - Feburary, 2024',
     title: 'Software Engineer Intern • NOW',
     description: `At NOW NZ, I developed and deployed an internal web application to streamline client and service information retrieval for technical support staff, improving operational efficiency and customer service delivery. `,
@@ -38,15 +37,12 @@ const experiences = [
   {
     id: 4,
     date: 'Feburary, 2023 - November, 2025',
-    id: 4,
-    date: 'Feburary, 2023 - November, 2024',
     title: 'Tutor • Victoria University of Wellington',
     description:
       'Tutored for the courses Introduction to Computer Program Design, Data Structures and Algorithms, Software Design and Project Management. I provided ran lab sessions, marked student assignments, and invigilated exams.',
     technologies: ['Java', 'Marking', 'Communication']
   },
   {
-    id: 5,
     id: 5,
     date: 'July, 2018 - Feburary, 2022',
     title: 'Technician • MyDevice',
