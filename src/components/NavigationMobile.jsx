@@ -2,21 +2,32 @@ import { useEffect } from 'react';
 
 const NavigationMobile = () => {
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section');
-      const barMobile = document.querySelector('.barMobile');
-    
+    const sections = document.querySelectorAll('section');
+    const barMobile = document.querySelector('.barMobile');
+    let ticking = false;
+    let activeIndex = -1;
+
+    const update = () => {
+      ticking = false;
       sections.forEach((element, i) => {
         const beginPoint = element.offsetTop - 100;
         const lastPoint = beginPoint + element.clientHeight + 100;
-    
-        if (window.scrollY >= beginPoint && window.scrollY <= lastPoint) {
-          barMobile.style.left = `${i * 64}px`; 
+
+        if (window.scrollY >= beginPoint && window.scrollY <= lastPoint && activeIndex !== i) {
+          activeIndex = i;
+          barMobile.style.left = `${i * 64}px`;
         }
       });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

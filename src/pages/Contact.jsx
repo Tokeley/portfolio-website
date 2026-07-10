@@ -1,4 +1,4 @@
-import { useContext  } from 'react';
+import { useContext, useRef } from 'react';
 import { Input, Textarea, Button } from '@chakra-ui/react';
 import { RiMailLine, RiCheckLine } from "react-icons/ri";
 import emailjs from 'emailjs-com';
@@ -15,9 +15,20 @@ const Contact = () => {
     message: '',
   });
 
-  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
-  const sendEmailSound = new Audio('/resources/audio/SendEmail.mp3');
-  const emailSentSound = new Audio('/resources/audio/EmailSent.mp3');
+  const { muted, isMobile } = useContext(SoundContext);
+
+  // Created once per mount (not per render) so typing in the form
+  // doesn't construct new Audio objects on every keystroke re-render
+  const soundsRef = useRef(null);
+  const getSounds = () => {
+    if (!soundsRef.current) {
+      soundsRef.current = {
+        sendEmailSound: new Audio('/resources/audio/SendEmail.mp3'),
+        emailSentSound: new Audio('/resources/audio/EmailSent.mp3'),
+      };
+    }
+    return soundsRef.current;
+  };
 
   const [submitted, setSubmitted] = useState(false); // Added state to track submission status
 
@@ -40,7 +51,7 @@ const Contact = () => {
       message: formData.message,
     };
     if ( !muted && !isMobile ) {
-      sendEmailSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
+      getSounds().sendEmailSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
      };
 
     emailjs.send(
@@ -52,7 +63,7 @@ const Contact = () => {
     .then((response) => {
       console.log('Email sent successfully:', response);
       if ( !muted && !isMobile ) {
-        emailSentSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
+        getSounds().emailSentSound.play().catch((error) => { console.error("Failed to play sound on:", error); });
       };
       setSubmitted(true); 
     })

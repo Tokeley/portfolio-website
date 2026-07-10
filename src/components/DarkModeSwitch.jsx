@@ -2,19 +2,33 @@ import React, { useContext, useRef } from 'react'
 import { DarkModeContext } from '../contexts/DarkModeContext';
 import { SoundContext } from '../contexts/SoundContext';
 
+const createSound = (src, volume) => {
+  const audio = new Audio(src);
+  audio.volume = volume;
+  return audio;
+};
+
 const DarkModeSwitch = () => {
   const { darkModeOn, setDarkModeOn } = useContext(DarkModeContext);
-  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
-  const lightOn = new Audio("/resources/audio/LightOn.mp3");
-  const lightOff = new Audio("/resources/audio/LightOff.mp3");
+  const { muted, isMobile } = useContext(SoundContext);
 
-  lightOn.volume = 0.2;
-  lightOff.volume = 0.2;
+  // Created once per mount (not per render) so toggling doesn't re-fetch audio
+  const soundsRef = useRef(null);
+  const getSounds = () => {
+    if (!soundsRef.current) {
+      soundsRef.current = {
+        lightOn: createSound("/resources/audio/LightOn.mp3", 0.2),
+        lightOff: createSound("/resources/audio/LightOff.mp3", 0.2),
+      };
+    }
+    return soundsRef.current;
+  };
 
-  const handleClick = () => { 
+  const handleClick = () => {
     setDarkModeOn((prevMode) => !prevMode)
 
     if ( !muted && !isMobile ) {
+      const { lightOn, lightOff } = getSounds();
       if (darkModeOn){
         lightOff.play().catch((error) => { console.error("Failed to play sound on:", error); });
       } else {

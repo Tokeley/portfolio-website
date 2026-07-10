@@ -1,17 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
 
-const MuteSwitch = () => {
-  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
+const createSound = (src, volume) => {
+  const audio = new Audio(src);
+  audio.volume = volume;
+  return audio;
+};
 
-  const soundOn = new Audio("/resources/audio/SoundOn.mp3");
-  const soundOff = new Audio("/resources/audio/SoundOff.mp3");
-  soundOn.volume = 0.6;
-  soundOff.volume = 0.6;
+const MuteSwitch = () => {
+  const { muted, setMuted, isMobile } = useContext(SoundContext);
+
+  // Created once per mount (not per render) so clicks don't re-fetch audio
+  const soundsRef = useRef(null);
+  const getSounds = () => {
+    if (!soundsRef.current) {
+      soundsRef.current = {
+        soundOn: createSound("/resources/audio/SoundOn.mp3", 0.6),
+        soundOff: createSound("/resources/audio/SoundOff.mp3", 0.6),
+      };
+    }
+    return soundsRef.current;
+  };
 
   const handleClick = () => {
     setMuted(!muted);
 
+    const { soundOn, soundOff } = getSounds();
     if (!muted && !isMobile) {
       soundOff.play().catch((error) => { console.error("Failed to play sound on:", error); });
     } else if (!isMobile) {

@@ -8,7 +8,6 @@ import { DarkModeContext } from './contexts/DarkModeContext';
 import { SoundContext } from './contexts/SoundContext';
 
 const App = () => {
-  const [bgOpacity, setBgOpacity] = useState(0.3);
   const { darkModeOn, setDarkModeOn } = useContext( DarkModeContext );
   const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
 
@@ -25,17 +24,32 @@ const App = () => {
   }, [darkModeOn]);
     
   useEffect(() => {
-    const handleScroll = () => {
+    // The overlay opacity is written to a CSS variable instead of React state
+    // so scrolling never re-renders the component tree.
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
       const homeSection = document.getElementById('Home');
       if (homeSection) {
         const homeHeight = homeSection.offsetHeight;
         const scrollY = window.scrollY;
         const newOpacity = (scrollY / homeHeight) * 0.6;
-        setBgOpacity(scrollY > homeHeight ? 0.9 : newOpacity + 0.3);
+        document.documentElement.style.setProperty(
+          '--dynamic-bg-opacity',
+          String(scrollY > homeHeight ? 0.9 : newOpacity + 0.3)
+        );
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -64,7 +78,7 @@ const App = () => {
       </div>
       <Header/>
       <div className="relative z-10">
-        <Pages bgOpacity={bgOpacity} />
+        <Pages />
       </div>
     </div>
   );

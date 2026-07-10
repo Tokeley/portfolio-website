@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import FlowField from '../FlowField';
 import { FaGithub, FaEnvelope, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const Home = () => {

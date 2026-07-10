@@ -1,23 +1,34 @@
-import { useEffect, useState } from 'react';
-import useSound from 'use-sound';
+import { useEffect } from 'react';
 
 const Navigation = () => {
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section');
-      const bar = document.querySelector('.bar');
+    const sections = document.querySelectorAll('section');
+    const bar = document.querySelector('.bar');
+    let ticking = false;
+    let activeIndex = -1;
+
+    const update = () => {
+      ticking = false;
       sections.forEach((element, i) => {
         const beginPoint = element.offsetTop - 100;
         const lastPoint = beginPoint + element.clientHeight + 100;
 
-        if (window.scrollY >= beginPoint && window.scrollY <= lastPoint) {
+        if (window.scrollY >= beginPoint && window.scrollY <= lastPoint && activeIndex !== i) {
+          activeIndex = i;
           bar.style.top = `${i * 64}px`;
         }
       });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

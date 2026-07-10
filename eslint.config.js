@@ -35,4 +35,14 @@ export default [
       ],
     },
   },
+  {
+    files: ['src/__tests__/**', 'src/test-utils/**', 'src/setupTests.js'],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
+      'react/prop-types': 'off',
+    },
+  },
 ]

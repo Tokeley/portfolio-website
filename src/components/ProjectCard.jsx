@@ -19,6 +19,8 @@ const ProjectCard = ({ project }) => {
             className="border-2 border-gray-200 dark:border-gray-700 rounded-lg"
             src={project.imageLink}
             alt={project.title}
+            loading="lazy"
+            decoding="async"
           />
         </Box>
         <Box padding={4} className="w-full lg:w-3/4">

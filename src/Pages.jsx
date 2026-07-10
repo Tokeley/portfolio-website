@@ -6,15 +6,13 @@ import Experience from './pages/Experience';
 import Contact from './pages/Contact';
 import { DarkModeContext } from './contexts/DarkModeContext';
 
-const Pages = ({ bgOpacity }) => {
+const Pages = () => {
   const { darkModeOn } = useContext(DarkModeContext);
-  let backgroundColor
-  if (darkModeOn){
-    backgroundColor = `rgba(24, 24, 27, ${bgOpacity})`;
-  }
-  else{
-    backgroundColor = `rgba(255, 255, 255, ${bgOpacity})`;
-  }
+  // Opacity lives in --dynamic-bg-opacity (updated directly on scroll in
+  // App.jsx, bypassing React); only the base colour depends on dark mode.
+  const backgroundColor = darkModeOn
+    ? 'rgba(24, 24, 27, var(--dynamic-bg-opacity, 0.3))'
+    : 'rgba(255, 255, 255, var(--dynamic-bg-opacity, 0.3))';
 
   return (
     <div

@@ -1,107 +1,130 @@
 import { useRef, useEffect, useState } from 'react';
 import p5 from 'p5';
 
+// Nature green palette, top -> bottom. Stored as plain numbers so the draw
+// loop never allocates p5.Color objects (it runs per-particle, per-frame).
+const GREEN_STOPS = [
+  { at: 0.0, r: 0, g: 90, b: 50 },
+  { at: 0.3, r: 35, g: 139, b: 69 },
+  { at: 0.55, r: 65, g: 171, b: 93 },
+  { at: 0.75, r: 116, g: 196, b: 118 },
+  { at: 1.0, r: 161, g: 217, b: 155 },
+];
+
+// Particles are a background effect; cap the count so very large screens
+// (e.g. 4K, ~16k particles uncapped) don't grind the main thread.
+const MAX_PARTICLES = 3000;
+
+const TAU = Math.PI * 2;
+
+const clamp = (v, min, max) => (v < min ? min : v > max ? max : v);
+
 const FlowField = () => {
   const isDarkMode = document.documentElement.classList.contains('dark');
   const sketchRef = useRef();
-  const [orientation, setOrientation] = useState(Math.floor(Math.random() * 4));
+  const [orientation] = useState(Math.floor(Math.random() * 4));
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const sketch = (p) => {
       let particles = [];
-      
+
       const screenSize = window.innerWidth * window.innerHeight;
-      const num = screenSize / 500;
+      const num = Math.min(Math.floor(screenSize / 500), MAX_PARTICLES);
       const noiseScale = 0.002;
 
-      p.setup = () => {
-        p.createCanvas(p.windowWidth*0.9999, p.windowHeight*0.9999).parent(sketchRef.current);
-        for (let i = 0; i < num; i++) {
-          particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
-        }
-        p.stroke(255);
-        if (isDarkMode){
+      const paintBackground = () => {
+        if (isDarkMode) {
           p.background(0, 1);
-        }
-        else{
+        } else {
           p.background(255, 1);
         }
       };
 
-      p.draw = () => {
-        let time = p.millis() * 0.00000001;
-
-        // Set the point size
-        p.strokeWeight(2);
+      p.setup = () => {
+        p.createCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999).parent(sketchRef.current);
+        // The trails are soft; rendering at device pixel ratio (4x the pixels
+        // on retina) is imperceptible here and much more expensive.
+        p.pixelDensity(1);
         for (let i = 0; i < num; i++) {
-          let particle = particles[i];
+          particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
+        }
+        p.stroke(255);
+        p.strokeWeight(2);
+        paintBackground();
 
-          // Nature green palette based on vertical position (top -> bottom)
-          const t = p.constrain(particle.y / p.height, 0, 1);
-          const greenStops = [
-            { at: 0.0,  c: p.color(0, 90, 50) },   // Green 1
-            { at: 0.30, c: p.color(35, 139, 69) },   // Green 2
-            { at: 0.55, c: p.color(65, 171, 93) },  // Green 3
-            { at: 0.75, c: p.color(116, 196, 118) }, // Green 4
-            { at: 1.0,  c: p.color(161, 217, 155) } // Green 5
-          ];
+        if (prefersReducedMotion) {
+          // Build the trail image once, then hold a static frame.
+          for (let i = 0; i < 150; i++) {
+            p.draw();
+          }
+          p.noLoop();
+        }
+      };
 
-          let lower = greenStops[0];
-          let upper = greenStops[greenStops.length - 1];
-          for (let s = 0; s < greenStops.length - 1; s++) {
-            if (t >= greenStops[s].at && t <= greenStops[s + 1].at) {
-              lower = greenStops[s];
-              upper = greenStops[s + 1];
+      p.draw = () => {
+        const time = p.millis() * 0.00000001;
+        const width = p.width;
+        const height = p.height;
+
+        for (let i = 0; i < num; i++) {
+          const particle = particles[i];
+
+          // Vertical position -> gradient colour (pure arithmetic, no allocs)
+          const t = clamp(particle.y / height, 0, 1);
+          let lower = GREEN_STOPS[0];
+          let upper = GREEN_STOPS[GREEN_STOPS.length - 1];
+          for (let s = 0; s < GREEN_STOPS.length - 1; s++) {
+            if (t >= GREEN_STOPS[s].at && t <= GREEN_STOPS[s + 1].at) {
+              lower = GREEN_STOPS[s];
+              upper = GREEN_STOPS[s + 1];
               break;
             }
           }
-
           const localT = (t - lower.at) / (upper.at - lower.at || 1);
-          const baseColor = p.lerpColor(lower.c, upper.c, localT);
 
           // Subtle brightness variation toward center adds depth
-          const edgeFactor = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
-          const brightnessBoost = p.map(edgeFactor, 0, p.width / 3, -40, 30);
+          const edgeFactor = Math.min(particle.x, width - particle.x, particle.y, height - particle.y);
+          const brightnessBoost = -40 + (edgeFactor / (width / 3)) * 70;
 
-          let r = p.constrain(p.red(baseColor) + brightnessBoost * 0.3, 0, 255);
-          let g = p.constrain(p.green(baseColor) + brightnessBoost * 0.9, 0, 255);
-          let b = p.constrain(p.blue(baseColor) + brightnessBoost * 0.3, 0, 255);
-
-          // Calculate distance to the nearest edge and map it to opacity
-          let distanceToEdge = Math.min(particle.x, p.width - particle.x, particle.y, p.height - particle.y);
+          const r = clamp(lower.r + (upper.r - lower.r) * localT + brightnessBoost * 0.3, 0, 255);
+          const g = clamp(lower.g + (upper.g - lower.g) * localT + brightnessBoost * 0.9, 0, 255);
+          const b = clamp(lower.b + (upper.b - lower.b) * localT + brightnessBoost * 0.3, 0, 255);
 
           // Increase opacity near edges for nice vignette; lower in center
-          let opacity = p.map(distanceToEdge, 0, p.width / 2, 255, 80);
-          opacity = p.constrain(opacity, 120, 255);
-          
+          let opacity = 255 + (edgeFactor / (width / 2)) * (80 - 255);
+          opacity = clamp(opacity, 120, 255);
+
           p.stroke(r, g, b, 255 - opacity);
           p.point(particle.x, particle.y);
-          let n = p.noise(particle.x * noiseScale, particle.y * noiseScale, time);
-          let a = p.TAU * n;
-          
+
+          const a = TAU * p.noise(particle.x * noiseScale, particle.y * noiseScale, time);
+
           // Adjust direction based on orientation
           switch (orientation) {
-            case 0:
-              particle.x += p.cos(a);
-              particle.y += p.sin(a);
-              break;
             case 1:
-              particle.x += p.sin(a);
-              particle.y += p.cos(a);
+              particle.x += Math.sin(a);
+              particle.y += Math.cos(a);
               break;
             case 2:
-              particle.x -= p.cos(a);
-              particle.y -= p.sin(a);
+              particle.x -= Math.cos(a);
+              particle.y -= Math.sin(a);
               break;
             case 3:
-              particle.x -= p.sin(a);
-              particle.y -= p.cos(a);
+              particle.x -= Math.sin(a);
+              particle.y -= Math.cos(a);
               break;
             default:
-              particle.x += p.cos(a);
-              particle.y += p.sin(a);
+              particle.x += Math.cos(a);
+              particle.y += Math.sin(a);
           }
         }
+      };
+
+      p.windowResized = () => {
+        p.resizeCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999);
+        paintBackground();
       };
     };
 

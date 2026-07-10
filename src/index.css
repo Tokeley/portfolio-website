@@ -26,21 +26,25 @@ code {
 @font-face {
   font-family: 'MontserratExtraLight';
   src: url('./fonts/montserrat/Montserrat-ExtraLight.otf') format('opentype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'MontserratLight';
   src: url('./fonts/montserrat/Montserrat-Light.otf') format('opentype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'MontserratMedium';
   src: url('./fonts/montserrat/Montserrat-Medium.otf') format('opentype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'InterRegular';
-  src: url('./fonts/inter/Inter-Regular.woff2') format('opentype');
+  src: url('./fonts/inter/Inter-Regular.woff2') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
@@ -48,5 +52,6 @@ code {
   src: url('./fonts/Francy.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 

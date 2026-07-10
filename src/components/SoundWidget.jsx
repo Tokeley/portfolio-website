@@ -1,6 +1,5 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
-import useSound from 'use-sound';
 import SoundInfo from './SoundInfo';
 
 // Array of audio tracks
@@ -11,14 +10,20 @@ const tracks = [
 ];
 
 const SoundWidget = ({currentTrackIndex, setCurrentTrackIndex}) => {
-  const { muted, setMuted, isMobile, setIsMobile } = useContext(SoundContext);
-  const [bgMusic, setBgMusic] = useState(new Audio(tracks[currentTrackIndex].src)); // Initial audio object
+  const { muted, isMobile } = useContext(SoundContext);
+  // Lazy initializer: the Audio object is constructed once, not on every render
+  const [bgMusic, setBgMusic] = useState(() => new Audio(tracks[currentTrackIndex].src));
   const [loading, setLoading] = useState(true);
-  const clickSound = new Audio("/resources/audio/Click.mp3");
+  const clickSoundRef = useRef(null);
+  const getClickSound = () => {
+    if (!clickSoundRef.current) {
+      clickSoundRef.current = new Audio("/resources/audio/Click.mp3");
+      clickSoundRef.current.volume = 0.4;
+    }
+    return clickSoundRef.current;
+  };
 
   useEffect(() => {
-
-    clickSound.volume = 0.4;
     bgMusic.volume = 0.6;
     bgMusic.loop = true;
   }, []);
@@ -38,8 +43,7 @@ const SoundWidget = ({currentTrackIndex, setCurrentTrackIndex}) => {
 
   const changeTrack = (direction) => {
     if (!isMobile) {
-      clickSound.volume = 0.4;
-      clickSound.play().catch((error) => {
+      getClickSound().play().catch((error) => {
         console.error("Failed to play sound on:", error);
       });
     }
