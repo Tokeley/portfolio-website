@@ -169,49 +169,6 @@ describe('FlowField', () => {
     expect(p.calls.background.length).toBe(backgroundsBefore + 1);
   });
 
-  it('re-scatters particles to match the new size on resize (shrinking)', () => {
-    // Start large, then shrink drastically - without a re-scatter, most
-    // particles would still be positioned outside the new, smaller canvas
-    // and simply stop being drawn.
-    setWindowSize(1920, 1080);
-    renderFlowField();
-    const { p } = MockP5.instances[0];
-    const originalNum = Math.min(Math.floor((1920 * 1080) / 500), 3000);
-    p.draw();
-    expect(p.calls.point).toHaveLength(originalNum);
-
-    p.windowWidth = 400;
-    p.windowHeight = 300;
-    p.windowResized();
-
-    const newNum = Math.floor((400 * 300 * 0.9999 * 0.9999) / 500);
-    p.calls.point = [];
-    p.draw();
-    expect(p.calls.point).toHaveLength(newNum);
-    // Every re-scattered particle must fall within the new (smaller) canvas.
-    for (const [x, y] of p.calls.point) {
-      expect(x).toBeGreaterThanOrEqual(0);
-      expect(x).toBeLessThanOrEqual(p.width);
-      expect(y).toBeGreaterThanOrEqual(0);
-      expect(y).toBeLessThanOrEqual(p.height);
-    }
-  });
-
-  it('re-scatters particles to fill the new area on resize (growing)', () => {
-    setWindowSize(400, 300);
-    renderFlowField();
-    const { p } = MockP5.instances[0];
-
-    p.windowWidth = 2000;
-    p.windowHeight = 1500;
-    p.windowResized();
-
-    const newNum = Math.min(Math.floor((2000 * 1500 * 0.9999 * 0.9999) / 500), 3000);
-    p.calls.point = [];
-    p.draw();
-    expect(p.calls.point).toHaveLength(newNum);
-  });
-
   describe('dark mode toggling mid-session', () => {
     const renderWithDarkMode = (darkModeOn) =>
       render(

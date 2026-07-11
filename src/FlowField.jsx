@@ -52,20 +52,10 @@ const FlowField = () => {
 
     const sketch = (p) => {
       let particles = [];
-      let num = 0;
-      const noiseScale = 0.002;
 
-      // Particle count/positions are sized to the canvas's current
-      // dimensions. Called on setup and again on every resize - otherwise
-      // shrinking the window leaves most particles positioned off the new
-      // (smaller) canvas, and growing it leaves the new space empty.
-      const scatterParticles = () => {
-        num = Math.min(Math.floor((p.width * p.height) / 500), MAX_PARTICLES);
-        particles = [];
-        for (let i = 0; i < num; i++) {
-          particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
-        }
-      };
+      const screenSize = window.innerWidth * window.innerHeight;
+      const num = Math.min(Math.floor(screenSize / 500), MAX_PARTICLES);
+      const noiseScale = 0.002;
 
       const paintBackground = (alpha = 1) => {
         if (darkModeRef.current) {
@@ -80,7 +70,9 @@ const FlowField = () => {
         // The trails are soft; rendering at device pixel ratio (4x the pixels
         // on retina) is imperceptible here and much more expensive.
         p.pixelDensity(1);
-        scatterParticles();
+        for (let i = 0; i < num; i++) {
+          particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
+        }
         p.stroke(255);
         p.strokeWeight(2);
         paintBackground(1);
@@ -156,7 +148,6 @@ const FlowField = () => {
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999);
         paintBackground(1);
-        scatterParticles();
       };
 
       p5ApiRef.current = {
