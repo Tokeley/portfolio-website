@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render } from '@testing-library/react';
 import { MockP5, createLcg } from '../test-utils/mockP5';
 import { createMatchMedia, MockIntersectionObserver } from '../setupTests';
@@ -14,6 +14,9 @@ const setWindowSize = (width, height) => {
   Object.defineProperty(window, 'innerWidth', { value: width, configurable: true, writable: true });
   Object.defineProperty(window, 'innerHeight', { value: height, configurable: true, writable: true });
 };
+
+// Must match RESIZE_DEBOUNCE_MS in FlowField.jsx
+const RESIZE_DEBOUNCE_MS = 200;
 
 const renderFlowField = () => render(<DarkModeProvider><FlowField /></DarkModeProvider>);
 
@@ -155,18 +158,114 @@ describe('FlowField', () => {
     expect(p.calls.point).toHaveLength(150 * num); // pre-rendered trails
   });
 
-  it('resizes the canvas and repaints the background on window resize', () => {
-    renderFlowField();
-    const { p } = MockP5.instances[0];
-    const backgroundsBefore = p.calls.background.length;
+  describe('window resize (debounced)', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
 
-    p.windowWidth = 800;
-    p.windowHeight = 600;
-    p.windowResized();
+    afterEach(() => {
+      vi.useRealTimers();
+    });
 
-    expect(p.calls.resizeCanvas).toHaveLength(1);
-    expect(p.width).toBeCloseTo(800 * 0.9999, 1);
-    expect(p.calls.background.length).toBe(backgroundsBefore + 1);
+    it('does not touch the canvas until the debounce delay has passed', () => {
+      renderFlowField();
+      const { p } = MockP5.instances[0];
+      const backgroundsBefore = p.calls.background.length;
+
+      p.windowWidth = 800;
+      p.windowHeight = 600;
+      p.windowResized();
+
+      // Not yet - still "mid-drag"
+      expect(p.calls.resizeCanvas).toHaveLength(0);
+      expect(p.calls.background.length).toBe(backgroundsBefore);
+
+      vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS);
+
+      expect(p.calls.resizeCanvas).toHaveLength(1);
+      expect(p.width).toBeCloseTo(800 * 0.9999, 1);
+      expect(p.calls.background.length).toBe(backgroundsBefore + 1);
+    });
+
+    it('coalesces rapid-fire resize events into a single canvas/particle update', () => {
+      renderFlowField();
+      const { p } = MockP5.instances[0];
+
+      // Simulate dragging a window edge: many resize events in quick succession
+      for (const [w, h] of [[900, 700], [850, 650], [800, 600], [750, 550]]) {
+        p.windowWidth = w;
+        p.windowHeight = h;
+        p.windowResized();
+        vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS / 2); // never lets the timer fire
+      }
+
+      expect(p.calls.resizeCanvas).toHaveLength(0);
+
+      vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS);
+
+      // Only the final size was ever applied - exactly once
+      expect(p.calls.resizeCanvas).toHaveLength(1);
+      expect(p.width).toBeCloseTo(750 * 0.9999, 1);
+      expect(p.height).toBeCloseTo(550 * 0.9999, 1);
+    });
+
+    it('clears the pending resize timeout on unmount (no stray post-unmount calls)', () => {
+      const { unmount } = renderFlowField();
+      const { p } = MockP5.instances[0];
+
+      p.windowWidth = 500;
+      p.windowHeight = 400;
+      p.windowResized();
+
+      expect(() => unmount()).not.toThrow();
+      expect(() => vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS * 2)).not.toThrow();
+      expect(p.calls.resizeCanvas).toHaveLength(0);
+    });
+
+    it('re-scatters particles to match the new size (shrinking)', () => {
+      // Start large, then shrink drastically - without a re-scatter, most
+      // particles would still be positioned outside the new, smaller canvas
+      // and simply stop being drawn.
+      setWindowSize(1920, 1080);
+      renderFlowField();
+      const { p } = MockP5.instances[0];
+      const originalNum = Math.min(Math.floor((1920 * 1080) / 500), 3000);
+      p.draw();
+      expect(p.calls.point).toHaveLength(originalNum);
+
+      p.windowWidth = 400;
+      p.windowHeight = 300;
+      p.windowResized();
+      vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS);
+
+      const newNum = Math.floor((400 * 300 * 0.9999 * 0.9999) / 500);
+      p.calls.point = [];
+      p.draw();
+      expect(p.calls.point).toHaveLength(newNum);
+      // Every re-scattered particle must fall within the new (smaller) canvas.
+      for (const [x, y] of p.calls.point) {
+        expect(x).toBeGreaterThanOrEqual(0);
+        expect(x).toBeLessThanOrEqual(p.width);
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(y).toBeLessThanOrEqual(p.height);
+      }
+    });
+
+    it('re-scatters particles to fill the new area (growing)', () => {
+      setWindowSize(400, 300);
+      renderFlowField();
+      const { p } = MockP5.instances[0];
+
+      p.windowWidth = 2000;
+      p.windowHeight = 1500;
+      p.windowResized();
+      vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS);
+
+      const newNum = Math.min(Math.floor((2000 * 1500 * 0.9999 * 0.9999) / 500), 3000);
+      p.calls.point = [];
+      p.draw();
+      expect(p.calls.point).toHaveLength(newNum);
+    });
   });
 
   describe('dark mode toggling mid-session', () => {

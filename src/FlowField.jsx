@@ -16,6 +16,14 @@ const GREEN_STOPS = [
 // (e.g. 4K, ~16k particles uncapped) don't grind the main thread.
 const MAX_PARTICLES = 3000;
 
+// The browser fires many 'resize' events per second while a window edge is
+// being dragged. Re-scattering thousands of particles on every single one
+// of those events blocks the main thread for the whole drag - the page
+// (including unrelated text/layout) appears frozen, then snaps all at once
+// when the drag ends and the backlog finally clears. Debouncing means the
+// expensive work runs once, shortly after the user stops resizing.
+const RESIZE_DEBOUNCE_MS = 200;
+
 const TAU = Math.PI * 2;
 
 const clamp = (v, min, max) => (v < min ? min : v > max ? max : v);
@@ -31,6 +39,7 @@ const FlowField = () => {
   const p5ApiRef = useRef(null);
   const myP5InstanceRef = useRef(null);
   const isFirstDarkModeRender = useRef(true);
+  const resizeTimeoutRef = useRef(null);
 
   useEffect(() => {
     darkModeRef.current = darkModeOn;
@@ -52,10 +61,21 @@ const FlowField = () => {
 
     const sketch = (p) => {
       let particles = [];
-
-      const screenSize = window.innerWidth * window.innerHeight;
-      const num = Math.min(Math.floor(screenSize / 500), MAX_PARTICLES);
+      let num = 0;
       const noiseScale = 0.002;
+
+      // Particle count/positions are sized to the canvas's current
+      // dimensions. Called on setup and again once resizing settles -
+      // otherwise shrinking the window leaves most particles positioned
+      // off the new (smaller) canvas, and growing it leaves the new space
+      // empty.
+      const scatterParticles = () => {
+        num = Math.min(Math.floor((p.width * p.height) / 500), MAX_PARTICLES);
+        particles = [];
+        for (let i = 0; i < num; i++) {
+          particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
+        }
+      };
 
       const paintBackground = (alpha = 1) => {
         if (darkModeRef.current) {
@@ -70,9 +90,7 @@ const FlowField = () => {
         // The trails are soft; rendering at device pixel ratio (4x the pixels
         // on retina) is imperceptible here and much more expensive.
         p.pixelDensity(1);
-        for (let i = 0; i < num; i++) {
-          particles.push(p.createVector(p.random(0, p.width), p.random(0, p.height)));
-        }
+        scatterParticles();
         p.stroke(255);
         p.strokeWeight(2);
         paintBackground(1);
@@ -146,8 +164,18 @@ const FlowField = () => {
       };
 
       p.windowResized = () => {
-        p.resizeCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999);
-        paintBackground(1);
+        // Debounced: only touch the canvas/particles once resizing has
+        // settled, so a live drag doesn't block the main thread (see
+        // RESIZE_DEBOUNCE_MS above).
+        if (resizeTimeoutRef.current) {
+          clearTimeout(resizeTimeoutRef.current);
+        }
+        resizeTimeoutRef.current = setTimeout(() => {
+          resizeTimeoutRef.current = null;
+          p.resizeCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999);
+          paintBackground(1);
+          scatterParticles();
+        }, RESIZE_DEBOUNCE_MS);
       };
 
       p5ApiRef.current = {
@@ -159,6 +187,10 @@ const FlowField = () => {
     myP5InstanceRef.current = myP5;
 
     return () => {
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+        resizeTimeoutRef.current = null;
+      }
       myP5.remove();
       myP5InstanceRef.current = null;
       p5ApiRef.current = null;
