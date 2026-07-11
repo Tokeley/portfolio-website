@@ -3,7 +3,7 @@ import { FaMapMarkerAlt, FaArrowRight, FaFile } from "react-icons/fa";
 const stats = [
   { label: "Creating:", value: "MEAP", link: "https://meap-log.vercel.app/"},
   { label: "Working at:", value: "Serato", link: "https://serato.com/"}, 
-  { label: "Reading:", value: "Klara and the Sun", link: "https://en.wikipedia.org/wiki/Klara_and_the_Sun"},
+  { label: "Reading:", value: "21 Lessons For The 21st Century", link: "https://en.wikipedia.org/wiki/21_Lessons_for_the_21st_Century"},
 ]
 
 
@@ -20,10 +20,10 @@ const About = () => {
               Software Engineer • Musician
             </p>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
-            <a href="https://www.google.com/maps/place/wellington/data=!4m2!3m1!1s0x6d38b1fc49e974cb:0xa00ef63a213b470?sa=X&ved=1t:155783&ictx=111" target="_blank" rel="noopener noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
+            <a href="https://www.google.com/maps/place/auckland/data=!4m2!3m1!1s0x6d6d47fb5c56ce0f:0x500ef6143a29940?sa=X&ved=1t:155783&ictx=111" target="_blank" rel="noopener noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
               <FaMapMarkerAlt className="text-gray-700 dark:text-offwhite lg:text-xl text-base" />
               <p className='ml-2 lg:text-xl text-base font-montserratMedium text-gray-700 dark:text-offwhite p-2'>
-                Wellington, New Zealand
+                Auckland
               </p>
               <FaArrowRight className="text-gray-700 dark:text-offwhite lg:text-xl text-base pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
             </a>
