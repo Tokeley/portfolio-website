@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { FaHome, FaBook, FaHammer, FaCode, FaEnvelope } from 'react-icons/fa';
 
 const NavigationMobile = () => {
   useEffect(() => {
@@ -42,7 +43,7 @@ const NavigationMobile = () => {
               <a href="#Home" className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
                      transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
                      hover:scale-105 hover:shadow-2xl"> 
-                <i className="fa-solid fa-house text-gray-700 dark:text-offwhite text-xl"></i>
+                <FaHome className="text-gray-700 dark:text-offwhite text-xl" />
               </a>
             </div>
 
@@ -51,7 +52,7 @@ const NavigationMobile = () => {
               <a href="#About" className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
                      transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
                      hover:scale-105 hover:shadow-2xl">
-                <i className="fa-solid fa-book text-gray-700 dark:text-offwhite text-xl"></i>
+                <FaBook className="text-gray-700 dark:text-offwhite text-xl" />
               </a>
               
             </div>
@@ -60,7 +61,7 @@ const NavigationMobile = () => {
               <a href="#Projects" className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
                      transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
                      hover:scale-105 hover:shadow-2xl">
-                <i className="fa-solid fa-hammer text-gray-700 dark:text-offwhite text-xl"></i>
+                <FaHammer className="text-gray-700 dark:text-offwhite text-xl" />
               </a>
               
             </div>
@@ -70,7 +71,7 @@ const NavigationMobile = () => {
               <a href="#Experience" className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
                      transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
                      hover:scale-105 hover:shadow-2xl">
-                <i className="fa-solid fa-code text-gray-700 dark:text-offwhite text-xl"></i>
+                <FaCode className="text-gray-700 dark:text-offwhite text-xl" />
               </a>
               
             </div>
@@ -80,7 +81,7 @@ const NavigationMobile = () => {
               <a href="#Contact" className="hover:cursor-pointer w-10 h-10 flex items-center justify-center shadow-xl rounded-md bg-offwhite dark:bg-gray-700 
                      transform transition-all duration-200 ease-in-out active:translate-y-1 active:scale-95 
                      hover:scale-105 hover:shadow-2xl">
-                <i className="fa-solid fa-envelope text-gray-700 dark:text-offwhite text-xl"></i>
+                <FaEnvelope className="text-gray-700 dark:text-offwhite text-xl" />
               </a>
   
             </div>

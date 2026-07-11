@@ -1,4 +1,5 @@
 import { Badge, Box, HStack, Image, Flex } from "@chakra-ui/react";
+import { FaArrowRight, FaCode, FaSignal } from "react-icons/fa";
 
 const ProjectCard = ({ project }) => {
 
@@ -32,7 +33,7 @@ const ProjectCard = ({ project }) => {
             </Box>
 
             {(project.codeLink || project.liveLink) && (
-              <i className="fa fa-arrow-right text-gray-700 dark:text-offwhite text-xl pl-1 transform md:translate-x-8 md:opacity-0 group-hover:md:translate-x-0 group-hover:md:opacity-100 transition-all duration-300 hidden md:inline"></i>
+              <FaArrowRight className="text-gray-700 dark:text-offwhite text-xl pl-1 transform md:translate-x-8 md:opacity-0 group-hover:md:translate-x-0 group-hover:md:opacity-100 transition-all duration-300 hidden md:inline" />
             )}
 
             {(project.codeLink || project.liveLink) && (
@@ -53,7 +54,7 @@ const ProjectCard = ({ project }) => {
                     >
                       Code
                     </p>
-                    <i className="ml-2 fa fa-code text-gray-700 dark:text-offwhite text-md md:ml-auto"></i>
+                    <FaCode className="ml-2 text-gray-700 dark:text-offwhite text-md md:ml-auto" />
                   </div>
                 </a>
               )}
@@ -71,7 +72,7 @@ const ProjectCard = ({ project }) => {
                     >
                       {project.liveLinkText}
                     </p>
-                    <i className=" ml-2 fa fa-signal text-gray-700 dark:text-offwhite text-md md:ml-auto"></i>
+                    <FaSignal className="ml-2 text-gray-700 dark:text-offwhite text-md md:ml-auto" />
                   </div>
                 </a>
               )}

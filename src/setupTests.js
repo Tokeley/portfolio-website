@@ -42,13 +42,43 @@ class MockResizeObserver {
   disconnect() {}
 }
 
+// jsdom doesn't implement IntersectionObserver; tests can grab the most
+// recent instance and call `.trigger(isIntersecting)` to simulate scroll.
+export class MockIntersectionObserver {
+  constructor(callback) {
+    this.callback = callback;
+    this.elements = new Set();
+    MockIntersectionObserver.instances.push(this);
+  }
+
+  observe(el) {
+    this.elements.add(el);
+  }
+
+  unobserve(el) {
+    this.elements.delete(el);
+  }
+
+  disconnect() {
+    this.elements.clear();
+  }
+
+  trigger(isIntersecting, target) {
+    this.callback([{ isIntersecting, target }], this);
+  }
+}
+MockIntersectionObserver.instances = [];
+
 beforeEach(() => {
   MockAudio.instances = [];
+  MockIntersectionObserver.instances = [];
   window.matchMedia = vi.fn(createMatchMedia(false));
   window.Audio = MockAudio;
   globalThis.Audio = MockAudio;
   window.ResizeObserver = MockResizeObserver;
   globalThis.ResizeObserver = MockResizeObserver;
+  window.IntersectionObserver = MockIntersectionObserver;
+  globalThis.IntersectionObserver = MockIntersectionObserver;
   document.documentElement.className = '';
   document.documentElement.style.cssText = '';
 });

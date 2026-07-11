@@ -2,11 +2,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../test-utils/renderWithProviders';
 import { MockAudio } from '../setupTests';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 import Contact from '../pages/Contact';
 
-vi.mock('emailjs-com', () => ({
-  default: { send: vi.fn(() => Promise.resolve({ status: 200 })) },
+vi.mock('@emailjs/browser', () => ({
+  default: {
+    init: vi.fn(),
+    send: vi.fn(() => Promise.resolve({ status: 200 })),
+  },
 }));
 
 const fillForm = () => {

@@ -31,6 +31,7 @@ export class MockP5 {
         point: [],
         background: [],
         noLoop: 0,
+        loop: 0,
         resizeCanvas: [],
       },
       createCanvas(w, h) {
@@ -62,6 +63,9 @@ export class MockP5 {
       noLoop() {
         p.calls.noLoop += 1;
       },
+      loop() {
+        p.calls.loop += 1;
+      },
       resizeCanvas(w, h) {
         p.width = w;
         p.height = h;
@@ -75,6 +79,18 @@ export class MockP5 {
     sketch(p);
     p.setup();
     MockP5.instances.push(this);
+  }
+
+  // Real p5 instance mode passes the instance itself as `p` to the sketch,
+  // so `new p5(...)` and the `p` seen inside setup/draw are the same object
+  // with `.loop()`/`.noLoop()` directly on it. This wrapper isn't that same
+  // object, so delegate to keep call sites (`myP5.loop()`) working the same.
+  loop() {
+    this.p.loop();
+  }
+
+  noLoop() {
+    this.p.noLoop();
   }
 
   remove() {

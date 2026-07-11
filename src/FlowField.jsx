@@ -1,5 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useContext } from 'react';
 import p5 from 'p5';
+import { DarkModeContext } from './contexts/DarkModeContext';
 
 // Nature green palette, top -> bottom. Stored as plain numbers so the draw
 // loop never allocates p5.Color objects (it runs per-particle, per-frame).
@@ -20,9 +21,29 @@ const TAU = Math.PI * 2;
 const clamp = (v, min, max) => (v < min ? min : v > max ? max : v);
 
 const FlowField = () => {
-  const isDarkMode = document.documentElement.classList.contains('dark');
+  const { darkModeOn } = useContext(DarkModeContext);
   const sketchRef = useRef();
   const [orientation] = useState(Math.floor(Math.random() * 4));
+
+  // Sketch closures capture values at mount time; refs let setup/draw/resize
+  // always read the *current* dark mode without recreating the p5 instance.
+  const darkModeRef = useRef(darkModeOn);
+  const p5ApiRef = useRef(null);
+  const myP5InstanceRef = useRef(null);
+  const isFirstDarkModeRender = useRef(true);
+
+  useEffect(() => {
+    darkModeRef.current = darkModeOn;
+
+    // Skip the mount render: setup() already painted the correct background.
+    if (isFirstDarkModeRender.current) {
+      isFirstDarkModeRender.current = false;
+      return;
+    }
+
+    // Repaint fully opaque so old-theme trails don't linger under the new one.
+    p5ApiRef.current?.repaint();
+  }, [darkModeOn]);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -34,11 +55,11 @@ const FlowField = () => {
       const num = Math.min(Math.floor(screenSize / 500), MAX_PARTICLES);
       const noiseScale = 0.002;
 
-      const paintBackground = () => {
-        if (isDarkMode) {
-          p.background(0, 1);
+      const paintBackground = (alpha = 1) => {
+        if (darkModeRef.current) {
+          p.background(0, alpha);
         } else {
-          p.background(255, 1);
+          p.background(255, alpha);
         }
       };
 
@@ -52,7 +73,7 @@ const FlowField = () => {
         }
         p.stroke(255);
         p.strokeWeight(2);
-        paintBackground();
+        paintBackground(1);
 
         if (prefersReducedMotion) {
           // Build the trail image once, then hold a static frame.
@@ -124,15 +145,53 @@ const FlowField = () => {
 
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999);
-        paintBackground();
+        paintBackground(1);
+      };
+
+      p5ApiRef.current = {
+        repaint: () => paintBackground(255),
       };
     };
 
     const myP5 = new p5(sketch, sketchRef.current);
+    myP5InstanceRef.current = myP5;
 
     return () => {
       myP5.remove();
+      myP5InstanceRef.current = null;
+      p5ApiRef.current = null;
     };
+  }, []);
+
+  // The canvas is a fixed, full-screen background layer that sits behind the
+  // rest of the site, so it stays mounted (and animating) even once the user
+  // has scrolled well past it. Pause the sketch while the hero is off-screen
+  // and resume it when it scrolls back into view.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return undefined; // already a static frame; nothing to pause/resume
+    }
+
+    const heroEl = document.getElementById('Home');
+    if (!heroEl || typeof IntersectionObserver === 'undefined') {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const instance = myP5InstanceRef.current;
+        if (!instance) return;
+        if (entry.isIntersecting) {
+          instance.loop();
+        } else {
+          instance.noLoop();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(heroEl);
+
+    return () => observer.disconnect();
   }, []);
 
   return <div ref={sketchRef}></div>;

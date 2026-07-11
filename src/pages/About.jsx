@@ -1,3 +1,5 @@
+import { FaMapMarkerAlt, FaArrowRight, FaFile } from "react-icons/fa";
+
 const stats = [
   { label: "Creating:", value: "MEAP", link: "https://meap-log.vercel.app/"},
   { label: "Working at:", value: "Serato", link: "https://serato.com/"}, 
@@ -19,11 +21,11 @@ const About = () => {
             </p>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
             <a href="https://www.google.com/maps/place/wellington/data=!4m2!3m1!1s0x6d38b1fc49e974cb:0xa00ef63a213b470?sa=X&ved=1t:155783&ictx=111" target="_blank" rel="noopener noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
-              <i className="fa fa-map-marker-alt text-gray-700 dark:text-offwhite lg:text-xl text-base"></i>
+              <FaMapMarkerAlt className="text-gray-700 dark:text-offwhite lg:text-xl text-base" />
               <p className='ml-2 lg:text-xl text-base font-montserratMedium text-gray-700 dark:text-offwhite p-2'>
                 Wellington, New Zealand
               </p>
-              <i className="fa fa-arrow-right text-gray-700 dark:text-offwhite lg:text-xl text-base pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300"></i>
+              <FaArrowRight className="text-gray-700 dark:text-offwhite lg:text-xl text-base pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
             </a>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
             <div className='w-full p-2'>
@@ -38,7 +40,7 @@ const About = () => {
                     </div>
                     <a key={index} a href={stat.link} target="_blank" rel="noopener noreferrer" className='w-3/4 flex hover:cursor-pointer items-center group'>
                       <p className='lg:text-lg text-sm font-montserratLight font-bold text-gray-700 dark:text-offwhite'>{stat.value}</p>
-                      <i className="fa fa-arrow-right text-gray-700 dark:text-offwhite lg:text-lg text-sm pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300"></i>
+                      <FaArrowRight className="text-gray-700 dark:text-offwhite lg:text-lg text-sm pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
                     </a>
                   </div>
                 ))}
@@ -46,11 +48,11 @@ const About = () => {
             </div>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
             <a href="/resources/Alex_Manning_Resume_2025.pdf" target="_blank" rel="noreferrer" className='flex hover:cursor-pointer items-center group p-2'>
-                <i className="fa fa-file text-gray-700 dark:text-offwhite lg:text-xl text-base"></i>
+                <FaFile className="text-gray-700 dark:text-offwhite lg:text-xl text-base" />
                 <p className='ml-2 lg:text-xl text-base font-montserratMedium text-gray-700 dark:text-offwhite p-2'>
                     Resume
                 </p>
-                <i className="fa fa-arrow-right text-gray-700 dark:text-offwhite lg:text-xl text-base pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300"></i>
+                <FaArrowRight className="text-gray-700 dark:text-offwhite lg:text-xl text-base pl-2 transform translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
             </a>
             <div className='w-full border-t-2 border-gray-400 dark:border-offwhite my-2'></div>
           </div>

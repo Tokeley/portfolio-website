@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import { FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import { SoundContext } from '../contexts/SoundContext';
 
 const createSound = (src, volume) => {
@@ -42,9 +43,9 @@ const MuteSwitch = () => {
         onClick={handleClick}
       >
         {muted ? (
-          <i className="fa-solid fa-volume-xmark text-gray-700 dark:text-offwhite text-xl"></i>
+          <FaVolumeMute data-testid="icon-muted" className="text-gray-700 dark:text-offwhite text-xl" />
         ) : (
-          <i className="fa-solid fa-volume-high text-gray-700 dark:text-offwhite text-xl"></i>
+          <FaVolumeUp data-testid="icon-unmuted" className="text-gray-700 dark:text-offwhite text-xl" />
         )}
       </a>
     </div>

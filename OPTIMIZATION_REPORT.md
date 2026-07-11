@@ -1,9 +1,13 @@
 # Portfolio Website — Performance Optimization Report
 
-Audit date: 2026-07-11. Scope: full codebase, with a focus on animated components.
-No visible content or visual design is changed by any implemented fix.
+Audit date: 2026-07-11, updated 2026-07-11 (follow-up pass). Scope: full codebase, with a
+focus on animated components.
 
 Legend: ✅ implemented on this branch · 📋 recommended, not implemented (needs your judgement)
+
+Everything marked ✅ in sections 1–4 and 5.4 involves **no** visible content or visual change.
+Items 1.7, 1.8, 5.2, and 5.3 are flagged inline as they either intentionally change visible
+behaviour (by your request) or touch content/binary assets.
 
 ---
 
@@ -46,16 +50,21 @@ animation. The sketch now renders a single static frame for them and stops the l
 The canvas was created once at mount size; resizing the window (or rotating a phone) left
 blank margins or overflow. Added `windowResized` → `resizeCanvas` + background repaint.
 
-### 📋 1.7 Stale dark-mode capture
-`isDarkMode` is read from the DOM once when the component mounts, so toggling dark mode
-mid-session doesn't repaint the canvas background (old trails persist until they're painted
-over). Fixing this changes visible behaviour (canvas would clear on toggle), so it is left
-as-is per your "no content changes" instruction — but worth deciding on.
+### ✅ 1.7 Stale dark-mode capture — now fixed (changes visible behaviour, by request)
+`isDarkMode` used to be read from the DOM once at mount, so toggling dark mode mid-session
+never repainted the canvas. `FlowField` now reads `darkModeOn` from `DarkModeContext`
+reactively; on toggle it does one fully-opaque `background()` repaint so the canvas snaps to
+the new theme immediately instead of carrying old-theme trails. **Visible change:** the flow
+field now visibly clears to solid black/white the instant you toggle dark mode (previously it
+did nothing). Verified in-browser and covered by tests in `FlowField.test.jsx`.
 
-### 📋 1.8 Consider pausing the sketch when scrolled past the hero
-Below the hero the canvas sits behind a 90%-opaque overlay yet keeps burning CPU/GPU. An
-IntersectionObserver could pause/resume the loop. Not implemented because frozen trails are
-(barely) visible through the overlay — a small visual behaviour change you should sign off on.
+### ✅ 1.8 Pause the sketch when scrolled past the hero — now implemented
+The canvas is a fixed, full-screen layer that kept animating (and burning CPU/GPU) even once
+scrolled far below the fold. An `IntersectionObserver` on the `#Home` section now calls
+`p.noLoop()` when the hero scrolls out of view and `p.loop()` when it scrolls back in.
+Skipped entirely under `prefers-reduced-motion` (already static). **Visible change:** trails
+freeze the moment you scroll past the hero instead of continuing to animate underneath the
+overlay. Covered by tests in `FlowField.test.jsx`.
 
 ---
 
@@ -116,15 +125,19 @@ or defining it, throwing an uncaught `ReferenceError` on every page load. Remove
 - `src/App.test.js` — broken CRA leftover (tested for a "learn react" link that doesn't
   exist, with no test runner installed). Replaced by the new real test suite.
 
-### 📋 4.5 Font Awesome ships its entire icon library
-`index.css` imports `all.min.css` (~100 KB CSS + webfonts) for ~15 icons, while `react-icons`
-(tree-shaken, already a dependency) is used elsewhere. Migrating the `<i className="fa-...">`
-tags to `react-icons` would cut ~200 KB+ of transfer. Not done automatically because it
-touches many components' markup — safe, but worth doing as its own change.
+### ✅ 4.5 Font Awesome ships its entire icon library — now migrated to react-icons
+Every `<i className="fa-...">` (Navigation, NavigationMobile, MuteSwitch, DarkModeSwitch,
+SoundWidget, ProjectCard, About) has been replaced with the equivalent `react-icons/fa`
+component, and the `@fortawesome/fontawesome-free` import in `index.css` plus its dependency
+are removed. Built CSS dropped from 86 KB to 20 KB and the ~500 KB of Font Awesome webfont
+files no longer ship at all. Verified pixel-identical in the browser; tests updated to target
+`data-testid` attributes on the icons instead of the old `.fa-*` class names.
 
-### 📋 4.6 `emailjs-com` is deprecated
-Upstream recommends `@emailjs/browser`. Swap is nearly drop-in but touches the contact-form
-send path, so it's left for you.
+### ✅ 4.6 `emailjs-com` migrated to `@emailjs/browser`
+Swapped the deprecated `emailjs-com` package for the maintained `@emailjs/browser`. Now calls
+`emailjs.init(publicKey)` once at module load and `emailjs.send(serviceId, templateId, params)`
+without the key on every call (the modern API). Same service/template IDs, same behaviour —
+verified with the existing Contact test suite.
 
 ### 📋 4.7 Chakra UI v3 is heavy for its usage here
 Chakra (plus Emotion + next-themes) is used for one page's timeline, the project cards, and
@@ -139,17 +152,31 @@ largest chunk of the JS bundle. Big refactor — report only.
 Project card images (all below the fold) now have `loading="lazy"` + `decoding="async"`,
 so ~19 MB of PNGs no longer compete with the initial render.
 
-### 📋 5.2 Project images are dramatically oversized (biggest single win)
-`zen-zone.png` 6.8 MB, `portfolio-website.png` 5.4 MB, `reel-it-in.png` 4.2 MB, `meap.png`
-2.2 MB — all ~2,880 px wide, displayed in cards at ≲420 px. Resizing to ~1440 px and/or
-converting to WebP would cut ~19 MB to ~1–2 MB with no visible difference. Left untouched
-because they're your content files — run e.g.:
-`for f in public/resources/*.png; do sips -Z 1440 "$f"; done` (then optionally `cwebp`).
+### ✅ 5.2 Project images resized (biggest single win) — 19 MB → 6.8 MB
+The five images actually used in project cards that were oversized (`zen-zone.png`,
+`reel-it-in.png`, `meap.png`, `snipify.png`, `lightspeed.png`) were all ~1,500–2,900 px wide
+but displayed at ≲420 px. Downsized in place to a 1440 px max width with `sips -Z 1440`
+(no format change, no visible difference at display size):
 
-### 📋 5.3 Unreferenced heavy files ship with every deploy
-`public/light-speed.apk` (13 MB) is not linked anywhere; `ocean_waves.mp3`, `rain_ambience.mp3`,
-`room_ambience.mp3` (~15 MB) are not referenced by the site (verify `light-speed.html`
-doesn't use them before deleting).
+| file | before | after |
+|---|---|---|
+| zen-zone.png | 6.8 MB | 1.8 MB |
+| reel-it-in.png | 4.2 MB | 2.4 MB |
+| meap.png | 2.2 MB | 1.9 MB |
+| snipify.png | 948 KB | 248 KB |
+| lightspeed.png | 116 KB | 104 KB |
+
+`devastation.png` and `now-salt.png` were already ≤1440 px and untouched. Converting to WebP
+would shrink these further but wasn't done — that changes file extensions referenced in
+`Projects.jsx`, a bigger-blast-radius change than a straight resize.
+
+### ✅ 5.3 Unreferenced ambience tracks deleted (light-speed.apk kept, by request)
+`ocean_waves.mp3`, `rain_ambience.mp3`, `room_ambience.mp3` (~15 MB total) were confirmed
+unreferenced anywhere in the source or in `light-speed.html`, and deleted. `light-speed.apk`
+(13 MB) is linked from `light-speed.html` (the Lightspeed project's "Play Now!" page) and was
+left in place. `now-salt.png` and `portfolio-website.png` in `public/resources/` also appear
+unreferenced by any component — flagging here rather than deleting, since that wasn't in
+scope for this pass.
 
 ### ✅ 5.4 Font loading
 - `Inter-Regular.woff2` was declared as `format('opentype')` — an incorrect format hint that
@@ -169,20 +196,30 @@ woff2 is a quick win (no visual change).
 - ✅ `Navigation.jsx` imported `useState`/`useEffect` partly unused — cleaned.
 - 📋 `About.jsx` has a stray duplicated `a` attribute (`<a key={index} a href=...>`) and the
   `key` sits on the wrong element (the map's root is the un-keyed div). Functional today;
-  worth fixing when you next touch that file.
-- 📋 `index.html` has no `<meta name="description">` — free SEO win, but it's content, so
-  left to you.
+  worth fixing when you next touch that file. (Left as-is; out of scope for this pass.)
+- ✅ `index.html` now has a `<meta name="description">` summarizing the site for search
+  engines/link previews.
 
 ---
 
 ## Test suite
 
-Added **Vitest + React Testing Library + jsdom** (`npm test` / `npm run test:watch`) covering:
+**Vitest + React Testing Library + jsdom** (`npm test` / `npm run test:watch`), 39 tests:
 - App renders all sections with the flow-field background (p5 mocked)
 - Scroll handler updates the CSS opacity variable with the original formula (rAF-throttled)
 - FlowField: mounts p5 once, cleans up on unmount, respects `prefers-reduced-motion`
 - Gradient math: new numeric interpolation matches the original p5 `lerpColor` values
+- FlowField dark-mode toggle: no repaint on mount, full opaque repaint on each toggle
+  thereafter (1.7)
+- FlowField hero visibility: `noLoop()`/`loop()` fire on IntersectionObserver
+  enter/exit, skipped under reduced motion, no crash without a `#Home` element (1.8)
 - Navigation active-bar tracking on scroll (desktop + mobile)
 - Audio components: single Audio instance across re-renders, mute toggling, track cycling
 - ProjectCard: lazy/async image attributes, links and badges intact
+- Contact form: sends via `@emailjs/browser`, clears fields, no audio while typing
 - Dark mode: class toggling on `<html>`, context propagation
+
+All icon migrations (4.5) were verified visually in the browser (identical appearance,
+zero Font Awesome network requests) since react-icons renders plain SVGs that don't need
+their own dedicated unit tests beyond the existing interaction tests, which were updated
+to target `data-testid` instead of the old `.fa-*` classes.

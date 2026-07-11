@@ -1,10 +1,16 @@
 import { useContext, useRef } from 'react';
 import { Input, Textarea, Button } from '@chakra-ui/react';
 import { RiMailLine, RiCheckLine } from "react-icons/ri";
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 import { useState } from 'react';
 import { Field } from "@/components/ui/field"
 import { SoundContext } from '../contexts/SoundContext';
+
+const EMAILJS_SERVICE_ID = 'service_t1pv2nb';
+const EMAILJS_TEMPLATE_ID = 'template_tf9fich';
+const EMAILJS_PUBLIC_KEY = 'l24TP84Z8Ia6A2Kkh';
+
+emailjs.init(EMAILJS_PUBLIC_KEY);
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -55,10 +61,9 @@ const Contact = () => {
      };
 
     emailjs.send(
-      'service_t1pv2nb',  
-      'template_tf9fich',  
-      templateParams,
-      'l24TP84Z8Ia6A2Kkh'
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams
     )
     .then((response) => {
       console.log('Email sent successfully:', response);

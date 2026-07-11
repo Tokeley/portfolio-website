@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
+import { FaBackward, FaForward } from 'react-icons/fa';
 import { SoundContext } from '../contexts/SoundContext';
 import SoundInfo from './SoundInfo';
 
@@ -93,10 +94,11 @@ const SoundWidget = ({currentTrackIndex, setCurrentTrackIndex}) => {
   return (
     <div className="flex flex-grow items-center">
       <div className="mx-4 sm:mx-0 flex-grow sm:w-60 w-full h-max border border-gray-700 flex items-center justify-between p-2 backdrop-blur-lg">
-        <i
-          className="fa-solid fa-backward text-gray-700 cursor-pointer"
+        <FaBackward
+          data-testid="icon-backward"
+          className="text-gray-700 cursor-pointer"
           onClick={() => changeTrack("previous")}
-        ></i>
+        />
         {loading ? (
           <div className="w-6 h-6 border-2 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
         ) : (
@@ -104,10 +106,11 @@ const SoundWidget = ({currentTrackIndex, setCurrentTrackIndex}) => {
             {tracks[currentTrackIndex].title}
           </p>
         )}
-        <i
-          className="fa-solid fa-forward text-gray-700 cursor-pointer"
+        <FaForward
+          data-testid="icon-forward"
+          className="text-gray-700 cursor-pointer"
           onClick={() => changeTrack("next")}
-        ></i>
+        />
       </div>
       {
         !isMobile ? (<SoundInfo />) : <></>

@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react'
+import { FaMoon, FaSun } from 'react-icons/fa';
 import { DarkModeContext } from '../contexts/DarkModeContext';
 import { SoundContext } from '../contexts/SoundContext';
 
@@ -49,9 +50,9 @@ const DarkModeSwitch = () => {
         onClick={handleClick}
       >
         {darkModeOn ? (
-          <i className="fa-solid fa-moon text-gray-700 dark:text-offwhite text-xl"></i>
+          <FaMoon data-testid="icon-moon" className="text-gray-700 dark:text-offwhite text-xl" />
         ) : (
-          <i className="fa-solid fa-sun text-gray-700 dark:text-offwhite text-xl"></i>
+          <FaSun data-testid="icon-sun" className="text-gray-700 dark:text-offwhite text-xl" />
         )}
       </a>
     </div>

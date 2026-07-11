@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '@testing-library/react';
 import { MockP5, createLcg } from '../test-utils/mockP5';
-import { createMatchMedia } from '../setupTests';
+import { createMatchMedia, MockIntersectionObserver } from '../setupTests';
+import { DarkModeProvider, DarkModeContext } from '../contexts/DarkModeContext';
 import FlowField from '../FlowField';
 
 vi.mock('p5', async () => {
@@ -13,6 +14,16 @@ const setWindowSize = (width, height) => {
   Object.defineProperty(window, 'innerWidth', { value: width, configurable: true, writable: true });
   Object.defineProperty(window, 'innerHeight', { value: height, configurable: true, writable: true });
 };
+
+const renderFlowField = () => render(<DarkModeProvider><FlowField /></DarkModeProvider>);
+
+const renderFlowFieldWithHero = () =>
+  render(
+    <DarkModeProvider>
+      <div id="Home" />
+      <FlowField />
+    </DarkModeProvider>
+  );
 
 // Reference implementation of the ORIGINAL (pre-optimization) per-particle
 // colour algorithm, which used p5.lerpColor/map/constrain. The optimized
@@ -63,14 +74,14 @@ describe('FlowField', () => {
   });
 
   it('creates a single p5 instance and removes it on unmount', () => {
-    const { unmount } = render(<FlowField />);
+    const { unmount } = renderFlowField();
     expect(MockP5.instances).toHaveLength(1);
     unmount();
     expect(MockP5.instances[0].removed).toBe(true);
   });
 
   it('renders at pixel density 1 and sets stroke weight once in setup', () => {
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     expect(p.calls.pixelDensity).toEqual([1]);
     expect(p.calls.strokeWeight).toEqual([2]);
@@ -81,7 +92,7 @@ describe('FlowField', () => {
   });
 
   it('spawns screen-area/500 particles on normal screens', () => {
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     p.draw();
     expect(p.calls.point).toHaveLength(Math.floor((1024 * 768) / 500));
@@ -89,14 +100,14 @@ describe('FlowField', () => {
 
   it('caps the particle count on very large screens', () => {
     setWindowSize(4000, 2500); // uncapped would be 20,000 particles
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     p.draw();
     expect(p.calls.point).toHaveLength(3000);
   });
 
   it('produces the same colours as the original p5 lerpColor implementation', () => {
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     p.calls.stroke = []; // drop the initial stroke(255) from setup
     p.draw();
@@ -123,7 +134,7 @@ describe('FlowField', () => {
   });
 
   it('moves every particle each frame', () => {
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     p.draw();
     const first = p.calls.point.map(([x, y]) => `${x},${y}`);
@@ -137,7 +148,7 @@ describe('FlowField', () => {
     window.matchMedia = vi.fn(
       createMatchMedia((query) => query.includes('prefers-reduced-motion'))
     );
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     const num = Math.floor((1024 * 768) / 500);
     expect(p.calls.noLoop).toBe(1);
@@ -145,7 +156,7 @@ describe('FlowField', () => {
   });
 
   it('resizes the canvas and repaints the background on window resize', () => {
-    render(<FlowField />);
+    renderFlowField();
     const { p } = MockP5.instances[0];
     const backgroundsBefore = p.calls.background.length;
 
@@ -156,5 +167,81 @@ describe('FlowField', () => {
     expect(p.calls.resizeCanvas).toHaveLength(1);
     expect(p.width).toBeCloseTo(800 * 0.9999, 1);
     expect(p.calls.background.length).toBe(backgroundsBefore + 1);
+  });
+
+  describe('dark mode toggling mid-session', () => {
+    const renderWithDarkMode = (darkModeOn) =>
+      render(
+        <DarkModeContext.Provider value={{ darkModeOn, setDarkModeOn: () => {} }}>
+          <FlowField />
+        </DarkModeContext.Provider>
+      );
+
+    it('does not repaint on mount beyond the initial setup background', () => {
+      renderWithDarkMode(true);
+      const { p } = MockP5.instances[0];
+      expect(p.calls.background).toHaveLength(1);
+    });
+
+    it('fully repaints with the new theme color when dark mode toggles', () => {
+      const { rerender } = renderWithDarkMode(true);
+      const { p } = MockP5.instances[0];
+      expect(p.calls.background).toEqual([[0, 1]]); // dark, near-transparent initial paint
+
+      rerender(
+        <DarkModeContext.Provider value={{ darkModeOn: false, setDarkModeOn: () => {} }}>
+          <FlowField />
+        </DarkModeContext.Provider>
+      );
+
+      expect(p.calls.background).toEqual([[0, 1], [255, 255]]); // opaque repaint, new theme
+    });
+
+    it('repaints again when toggling back to the original theme', () => {
+      const { rerender } = renderWithDarkMode(false);
+      const { p } = MockP5.instances[0];
+
+      rerender(
+        <DarkModeContext.Provider value={{ darkModeOn: true, setDarkModeOn: () => {} }}>
+          <FlowField />
+        </DarkModeContext.Provider>
+      );
+      expect(p.calls.background.at(-1)).toEqual([0, 255]);
+
+      rerender(
+        <DarkModeContext.Provider value={{ darkModeOn: false, setDarkModeOn: () => {} }}>
+          <FlowField />
+        </DarkModeContext.Provider>
+      );
+      expect(p.calls.background.at(-1)).toEqual([255, 255]);
+    });
+  });
+
+  describe('pausing while scrolled past the hero', () => {
+    it('pauses and resumes the sketch as the hero leaves/enters the viewport', () => {
+      renderFlowFieldWithHero();
+      const { p } = MockP5.instances[0];
+      const observer = MockIntersectionObserver.instances[0];
+      expect(observer).toBeDefined();
+
+      observer.trigger(false);
+      expect(p.calls.noLoop).toBe(1);
+
+      observer.trigger(true);
+      expect(p.calls.loop).toBe(1);
+    });
+
+    it('does not observe anything when reduced motion is already active', () => {
+      window.matchMedia = vi.fn(
+        createMatchMedia((query) => query.includes('prefers-reduced-motion'))
+      );
+      renderFlowFieldWithHero();
+      expect(MockIntersectionObserver.instances).toHaveLength(0);
+    });
+
+    it('does not crash when no hero element is present', () => {
+      expect(() => renderFlowField()).not.toThrow();
+      expect(MockIntersectionObserver.instances).toHaveLength(0);
+    });
   });
 });

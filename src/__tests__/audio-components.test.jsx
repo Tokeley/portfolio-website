@@ -33,10 +33,10 @@ describe('MuteSwitch', () => {
 
   it('toggles between muted and unmuted icons', () => {
     const { container } = renderWithProviders(<MuteSwitch />);
-    expect(container.querySelector('.fa-volume-xmark')).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="icon-muted"]')).toBeInTheDocument();
 
     fireEvent.click(container.querySelector('a'));
-    expect(container.querySelector('.fa-volume-high')).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="icon-unmuted"]')).toBeInTheDocument();
   });
 });
 
@@ -54,10 +54,10 @@ describe('DarkModeSwitch', () => {
 
   it('toggles the icon and plays no sound while muted', () => {
     const { container } = renderSwitch(soundContext({ muted: true }));
-    expect(container.querySelector('.fa-moon')).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="icon-moon"]')).toBeInTheDocument();
 
     fireEvent.click(container.querySelector('a'));
-    expect(container.querySelector('.fa-sun')).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="icon-sun"]')).toBeInTheDocument();
     expect(MockAudio.instances).toHaveLength(0);
   });
 
@@ -102,7 +102,7 @@ describe('SoundWidget', () => {
     const { container } = renderWidget();
     await waitFor(() => expect(screen.getByText('Ethereal Forest')).toBeInTheDocument());
 
-    fireEvent.click(container.querySelector('.fa-forward'));
+    fireEvent.click(container.querySelector('[data-testid="icon-forward"]'));
     await waitFor(() => expect(screen.getByText('Fractal River')).toBeInTheDocument());
 
     const trackAudios = MockAudio.instances.filter((a) => a.src.includes('mp3') && !a.src.includes('Click'));
@@ -114,7 +114,7 @@ describe('SoundWidget', () => {
     const { container } = renderWidget();
     await waitFor(() => expect(screen.getByText('Ethereal Forest')).toBeInTheDocument());
 
-    fireEvent.click(container.querySelector('.fa-backward'));
+    fireEvent.click(container.querySelector('[data-testid="icon-backward"]'));
     await waitFor(() => expect(screen.getByText('Calm Park')).toBeInTheDocument());
   });
 
