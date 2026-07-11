@@ -8,7 +8,7 @@ const ProjectCard = ({ project }) => {
         direction={{ base: "column", lg: "row" }} // Switch direction based on screen size
         overflow=""
         width="full"
-        className="group xl:h-56 lg:h-44 md:hover:scale-105 hover:cursor-default transition-all duration-300 rounded-lg shadow-md mb-4 bg-white/70 dark:bg-gray-800/70 dark:hover:bg-gray-800 hover:bg-white"
+        className="group xl:min-h-56 lg:min-h-44 md:hover:scale-105 hover:cursor-default transition-all duration-300 rounded-lg shadow-md mb-4 bg-white/70 dark:bg-gray-800/70 dark:hover:bg-gray-800 hover:bg-white"
       >
         <Box
           padding={4}

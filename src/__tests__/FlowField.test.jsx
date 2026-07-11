@@ -183,7 +183,7 @@ describe('FlowField', () => {
       expect(p.calls.background).toHaveLength(1);
     });
 
-    it('fully repaints with the new theme color when dark mode toggles', () => {
+    it('repaints at the same low alpha as setup when dark mode toggles (does not wipe trails)', () => {
       const { rerender } = renderWithDarkMode(true);
       const { p } = MockP5.instances[0];
       expect(p.calls.background).toEqual([[0, 1]]); // dark, near-transparent initial paint
@@ -194,7 +194,9 @@ describe('FlowField', () => {
         </DarkModeContext.Provider>
       );
 
-      expect(p.calls.background).toEqual([[0, 1], [255, 255]]); // opaque repaint, new theme
+      // Low alpha (1), same as setup - a full-opacity repaint would erase
+      // the particle trails accumulated since mount.
+      expect(p.calls.background).toEqual([[0, 1], [255, 1]]);
     });
 
     it('repaints again when toggling back to the original theme', () => {
@@ -206,14 +208,14 @@ describe('FlowField', () => {
           <FlowField />
         </DarkModeContext.Provider>
       );
-      expect(p.calls.background.at(-1)).toEqual([0, 255]);
+      expect(p.calls.background.at(-1)).toEqual([0, 1]);
 
       rerender(
         <DarkModeContext.Provider value={{ darkModeOn: false, setDarkModeOn: () => {} }}>
           <FlowField />
         </DarkModeContext.Provider>
       );
-      expect(p.calls.background.at(-1)).toEqual([255, 255]);
+      expect(p.calls.background.at(-1)).toEqual([255, 1]);
     });
   });
 

@@ -41,7 +41,9 @@ const FlowField = () => {
       return;
     }
 
-    // Repaint fully opaque so old-theme trails don't linger under the new one.
+    // Same low alpha as the initial setup paint: nudges the base tint toward
+    // the new theme without a full-opacity wipe, which would erase the
+    // particle trails accumulated since mount (they'd look "reset").
     p5ApiRef.current?.repaint();
   }, [darkModeOn]);
 
@@ -149,7 +151,7 @@ const FlowField = () => {
       };
 
       p5ApiRef.current = {
-        repaint: () => paintBackground(255),
+        repaint: () => paintBackground(1),
       };
     };
 
