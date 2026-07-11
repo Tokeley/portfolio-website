@@ -57,6 +57,31 @@ describe('Navigation (desktop)', () => {
       expect.arrayContaining(['#Home', '#About', '#Projects', '#Experience', '#Contact'])
     );
   });
+
+  it('only reveals a label on hover over its own button, not the label area (peer, not group)', () => {
+    const { container } = render(
+      <Fixture>
+        <Navigation />
+      </Fixture>
+    );
+    const links = [...container.querySelectorAll('a[href^="#"]')];
+    const labels = [...container.querySelectorAll('span.opacity-0')];
+    expect(links).toHaveLength(5);
+    expect(labels).toHaveLength(5);
+
+    links.forEach((link) => {
+      // The trigger must be scoped to the button (peer), not a shared
+      // ancestor (group) that also covers the label's own hitbox -
+      // otherwise hovering where the (invisible) label sits also reveals it.
+      expect(link.className).toContain('peer');
+      expect(link.closest('.group')).toBeNull();
+    });
+
+    labels.forEach((label) => {
+      expect(label.className).toContain('peer-hover:opacity-100');
+      expect(label.className).not.toContain('group-hover:opacity-100');
+    });
+  });
 });
 
 describe('NavigationMobile', () => {
