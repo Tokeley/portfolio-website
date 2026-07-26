@@ -187,6 +187,34 @@ describe('FlowField', () => {
       expect(p.calls.background.length).toBe(backgroundsBefore + 1);
     });
 
+    it('ignores height-only resizes (mobile toolbar show/hide, keyboard open)', () => {
+      renderFlowField();
+      const { p } = MockP5.instances[0];
+      const backgroundsBefore = p.calls.background.length;
+
+      // Width unchanged, only height moved - e.g. Safari's toolbar hiding.
+      p.windowWidth = 1024;
+      p.windowHeight = 500;
+      p.windowResized();
+      vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS * 2);
+
+      expect(p.calls.resizeCanvas).toHaveLength(0);
+      expect(p.calls.background.length).toBe(backgroundsBefore);
+    });
+
+    it('still resizes when width changes alongside height (e.g. orientation flip)', () => {
+      renderFlowField();
+      const { p } = MockP5.instances[0];
+
+      p.windowWidth = 768;
+      p.windowHeight = 1024;
+      p.windowResized();
+      vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS);
+
+      expect(p.calls.resizeCanvas).toHaveLength(1);
+      expect(p.width).toBeCloseTo(768 * 0.9999, 1);
+    });
+
     it('coalesces rapid-fire resize events into a single canvas/particle update', () => {
       renderFlowField();
       const { p } = MockP5.instances[0];
