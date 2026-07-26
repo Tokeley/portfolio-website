@@ -28,6 +28,28 @@ const TAU = Math.PI * 2;
 
 const clamp = (v, min, max) => (v < min ? min : v > max ? max : v);
 
+// Mobile browsers resize the viewport (window.innerHeight) as their
+// address bar/toolbar hides and shows while scrolling - that's not a real
+// layout change, but re-scattering particles for it looks like an unwanted
+// redraw. Rather than trying to filter "real" resizes from toolbar noise,
+// mobile just doesn't react to resize at all: the canvas is sized once, up
+// front, to the largest the viewport can be (toolbar hidden), so it already
+// covers the toolbar-hidden state and never needs to change.
+const isMobileDevice = () => /android|iphone|ipad|ipod|kindle/i.test(navigator.userAgent);
+
+// Measures the CSS "large viewport height" (100lvh - the height assuming
+// browser UI is hidden) via an off-screen probe, since there's no direct JS
+// API for it. Falls back to the current innerHeight in browsers that don't
+// support the lvh unit (the probe's height then resolves to 0).
+const measureLargeViewportHeight = () => {
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed; top:0; left:0; height:100lvh; width:0; visibility:hidden; pointer-events:none;';
+  document.body.appendChild(probe);
+  const height = probe.offsetHeight;
+  document.body.removeChild(probe);
+  return height || window.innerHeight;
+};
+
 const FlowField = () => {
   const { darkModeOn } = useContext(DarkModeContext);
   const sketchRef = useRef();
@@ -58,6 +80,7 @@ const FlowField = () => {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = isMobileDevice();
 
     const sketch = (p) => {
       let particles = [];
@@ -86,7 +109,10 @@ const FlowField = () => {
       };
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999).parent(sketchRef.current);
+        // On mobile, size for the largest the viewport can get (toolbar
+        // hidden) up front - see the comment on isMobileDevice above.
+        const initialHeight = isMobile ? measureLargeViewportHeight() : p.windowHeight;
+        p.createCanvas(p.windowWidth * 0.9999, initialHeight * 0.9999).parent(sketchRef.current);
         // The trails are soft; rendering at device pixel ratio (4x the pixels
         // on retina) is imperceptible here and much more expensive.
         p.pixelDensity(1);
@@ -164,6 +190,11 @@ const FlowField = () => {
       };
 
       p.windowResized = () => {
+        // The canvas is already sized for the largest possible viewport
+        // (see setup) and mobile has no real resizes worth reacting to
+        // (see isMobileDevice above), so there's nothing to do here.
+        if (isMobile) return;
+
         // Debounced: only touch the canvas/particles once resizing has
         // settled, so a live drag doesn't block the main thread (see
         // RESIZE_DEBOUNCE_MS above).

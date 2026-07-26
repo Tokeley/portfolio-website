@@ -268,6 +268,65 @@ describe('FlowField', () => {
     });
   });
 
+  describe('on mobile devices', () => {
+    const setUserAgent = (value) => {
+      Object.defineProperty(navigator, 'userAgent', { value, configurable: true });
+    };
+
+    const IPHONE_UA =
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15';
+    const originalUserAgent = navigator.userAgent;
+
+    afterEach(() => {
+      setUserAgent(originalUserAgent);
+    });
+
+    it('ignores resize entirely, even across a debounce delay (toolbar show/hide, keyboard open)', () => {
+      setUserAgent(IPHONE_UA);
+      vi.useFakeTimers();
+      try {
+        renderFlowField();
+        const { p } = MockP5.instances[0];
+        const backgroundsBefore = p.calls.background.length;
+
+        // Toolbar hiding: height changes, width doesn't.
+        p.windowWidth = 1024;
+        p.windowHeight = 500;
+        p.windowResized();
+        vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS * 2);
+        expect(p.calls.resizeCanvas).toHaveLength(0);
+        expect(p.calls.background.length).toBe(backgroundsBefore);
+
+        // Even a real-looking resize (e.g. orientation flip) is ignored -
+        // mobile never reacts to resize at all.
+        p.windowWidth = 768;
+        p.windowHeight = 1024;
+        p.windowResized();
+        vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS * 2);
+        expect(p.calls.resizeCanvas).toHaveLength(0);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('still resizes on non-mobile user agents (desktop behaviour is unaffected)', () => {
+      vi.useFakeTimers();
+      try {
+        renderFlowField();
+        const { p } = MockP5.instances[0];
+
+        p.windowWidth = 800;
+        p.windowHeight = 600;
+        p.windowResized();
+        vi.advanceTimersByTime(RESIZE_DEBOUNCE_MS);
+
+        expect(p.calls.resizeCanvas).toHaveLength(1);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+  });
+
   describe('dark mode toggling mid-session', () => {
     const renderWithDarkMode = (darkModeOn) =>
       render(
