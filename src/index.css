@@ -4,8 +4,16 @@
 
 
 
-html {
-  scroll-behavior: smooth;
+/* The document itself never scrolls - #scroll-container (see App.jsx) does
+   instead. Mobile Safari (and similar) only auto-hides its toolbar in
+   response to the top-level document scrolling, so keeping the document
+   fixed keeps the toolbar from disappearing/reappearing while the page
+   content scrolls underneath it. */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {

@@ -40,7 +40,6 @@ const FlowField = () => {
   const myP5InstanceRef = useRef(null);
   const isFirstDarkModeRender = useRef(true);
   const resizeTimeoutRef = useRef(null);
-  const lastWidthRef = useRef(0);
 
   useEffect(() => {
     darkModeRef.current = darkModeOn;
@@ -88,7 +87,6 @@ const FlowField = () => {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth * 0.9999, p.windowHeight * 0.9999).parent(sketchRef.current);
-        lastWidthRef.current = p.windowWidth;
         // The trails are soft; rendering at device pixel ratio (4x the pixels
         // on retina) is imperceptible here and much more expensive.
         p.pixelDensity(1);
@@ -166,17 +164,6 @@ const FlowField = () => {
       };
 
       p.windowResized = () => {
-        // Mobile browsers fire 'resize' when the address bar/toolbar hides or
-        // shows (height-only change) or the keyboard opens - none of that is
-        // a real layout change, so re-scattering particles for it just looks
-        // like an unwanted re-render. Only react when the width actually
-        // changes (covers real resizes and orientation flips, which swap
-        // width/height).
-        if (p.windowWidth === lastWidthRef.current) {
-          return;
-        }
-        lastWidthRef.current = p.windowWidth;
-
         // Debounced: only touch the canvas/particles once resizing has
         // settled, so a live drag doesn't block the main thread (see
         // RESIZE_DEBOUNCE_MS above).

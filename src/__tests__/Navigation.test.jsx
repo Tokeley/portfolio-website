@@ -3,8 +3,10 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import Navigation from '../components/Navigation';
 import NavigationMobile from '../components/NavigationMobile';
 
-const setScrollY = (value) => {
-  Object.defineProperty(window, 'scrollY', { value, configurable: true, writable: true });
+// Sections live inside #scroll-container, which is what actually scrolls
+// (see the comment on it in App.jsx) - not the document/window.
+const setScrollTop = (container, value) => {
+  Object.defineProperty(container, 'scrollTop', { value, configurable: true, writable: true });
 };
 
 // Give each fixture <section> a fake position: i * 1000 tall blocks
@@ -16,7 +18,7 @@ const layoutSections = (container) => {
 };
 
 const Fixture = ({ children }) => (
-  <div>
+  <div id="scroll-container">
     <section id="Home" />
     <section id="About" />
     <section id="Projects" />
@@ -28,21 +30,21 @@ const Fixture = ({ children }) => (
 
 describe('Navigation (desktop)', () => {
   it('moves the active bar to the section under the scroll position', async () => {
-    setScrollY(0);
     const { container } = render(
       <Fixture>
         <Navigation />
       </Fixture>
     );
+    const scrollContainer = container.querySelector('#scroll-container');
     layoutSections(container);
     const bar = container.querySelector('.bar');
 
-    setScrollY(2500); // inside section index 2 (Projects)
-    fireEvent.scroll(window);
+    setScrollTop(scrollContainer, 2500); // inside section index 2 (Projects)
+    fireEvent.scroll(scrollContainer);
     await waitFor(() => expect(bar.style.top).toBe('128px'));
 
-    setScrollY(4200); // inside section index 4 (Contact)
-    fireEvent.scroll(window);
+    setScrollTop(scrollContainer, 4200); // inside section index 4 (Contact)
+    fireEvent.scroll(scrollContainer);
     await waitFor(() => expect(bar.style.top).toBe('256px'));
   });
 
@@ -86,17 +88,17 @@ describe('Navigation (desktop)', () => {
 
 describe('NavigationMobile', () => {
   it('moves the active bar horizontally on scroll', async () => {
-    setScrollY(0);
     const { container } = render(
       <Fixture>
         <NavigationMobile />
       </Fixture>
     );
+    const scrollContainer = container.querySelector('#scroll-container');
     layoutSections(container);
     const bar = container.querySelector('.barMobile');
 
-    setScrollY(1500); // inside section index 1 (About)
-    fireEvent.scroll(window);
+    setScrollTop(scrollContainer, 1500); // inside section index 1 (About)
+    fireEvent.scroll(scrollContainer);
     await waitFor(() => expect(bar.style.left).toBe('64px'));
   });
 });

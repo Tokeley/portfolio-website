@@ -8,8 +8,12 @@ vi.mock('p5', async () => {
   return { default: MockP5 };
 });
 
-const setScrollY = (value) => {
-  Object.defineProperty(window, 'scrollY', { value, configurable: true, writable: true });
+// #scroll-container (not the document/window) is what actually scrolls -
+// see the comment on it in App.jsx.
+const setScrollTop = (value) => {
+  const scrollContainer = document.getElementById('scroll-container');
+  Object.defineProperty(scrollContainer, 'scrollTop', { value, configurable: true, writable: true });
+  return scrollContainer;
 };
 
 describe('App', () => {
@@ -44,8 +48,8 @@ describe('App', () => {
     Object.defineProperty(home, 'offsetHeight', { value: 1000, configurable: true });
 
     // Halfway down the hero: (500 / 1000) * 0.6 + 0.3 = 0.6
-    setScrollY(500);
-    fireEvent.scroll(window);
+    let scrollContainer = setScrollTop(500);
+    fireEvent.scroll(scrollContainer);
     await waitFor(() => {
       expect(
         document.documentElement.style.getPropertyValue('--dynamic-bg-opacity')
@@ -53,8 +57,8 @@ describe('App', () => {
     });
 
     // Past the hero: clamps to 0.9
-    setScrollY(1500);
-    fireEvent.scroll(window);
+    scrollContainer = setScrollTop(1500);
+    fireEvent.scroll(scrollContainer);
     await waitFor(() => {
       expect(
         document.documentElement.style.getPropertyValue('--dynamic-bg-opacity')
@@ -73,8 +77,8 @@ describe('App', () => {
     const observer = new MutationObserver(renderSpy);
     observer.observe(pagesWrapper, { childList: true, subtree: true, attributes: true });
 
-    setScrollY(400);
-    fireEvent.scroll(window);
+    const scrollContainer = setScrollTop(400);
+    fireEvent.scroll(scrollContainer);
     await waitFor(() => {
       expect(
         document.documentElement.style.getPropertyValue('--dynamic-bg-opacity')
