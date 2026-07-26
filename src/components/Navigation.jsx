@@ -6,21 +6,16 @@ const Navigation = () => {
   useEffect(() => {
     const sections = document.querySelectorAll('section');
     const bar = document.querySelector('.bar');
-    // #scroll-container (not the document) is what actually scrolls - see
-    // the comment on it in App.jsx.
-    const scrollContainer = document.getElementById('scroll-container');
-    if (!scrollContainer) return undefined;
     let ticking = false;
     let activeIndex = -1;
 
     const update = () => {
       ticking = false;
-      const scrollY = scrollContainer.scrollTop;
       sections.forEach((element, i) => {
         const beginPoint = element.offsetTop - 100;
         const lastPoint = beginPoint + element.clientHeight + 100;
 
-        if (scrollY >= beginPoint && scrollY <= lastPoint && activeIndex !== i) {
+        if (window.scrollY >= beginPoint && window.scrollY <= lastPoint && activeIndex !== i) {
           activeIndex = i;
           bar.style.top = `${i * 64}px`;
         }
@@ -34,8 +29,8 @@ const Navigation = () => {
       }
     };
 
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (

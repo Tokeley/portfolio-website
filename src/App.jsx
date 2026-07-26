@@ -28,17 +28,12 @@ const App = () => {
     // so scrolling never re-renders the component tree.
     let ticking = false;
 
-    // #scroll-container (not the document) is what actually scrolls - see
-    // the comment on it below for why.
-    const scrollContainer = document.getElementById('scroll-container');
-    if (!scrollContainer) return undefined;
-
     const update = () => {
       ticking = false;
       const homeSection = document.getElementById('Home');
       if (homeSection) {
         const homeHeight = homeSection.offsetHeight;
-        const scrollY = scrollContainer.scrollTop;
+        const scrollY = window.scrollY;
         const newOpacity = (scrollY / homeHeight) * 0.6;
         document.documentElement.style.setProperty(
           '--dynamic-bg-opacity',
@@ -54,9 +49,9 @@ const App = () => {
       }
     };
 
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      scrollContainer.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -82,14 +77,8 @@ const App = () => {
         <NavigationMobile />
       </div>
       <Header/>
-      {/* The document (html/body) is locked from scrolling (see index.css) -
-          this container scrolls instead. Mobile Safari only auto-hides its
-          toolbar in response to the document scrolling, so keeping all real
-          scrolling confined to here keeps the toolbar from disappearing. */}
-      <div id="scroll-container" className="h-dvh overflow-y-auto overscroll-contain scroll-smooth [-webkit-overflow-scrolling:touch]">
-        <div className="relative z-10">
-          <Pages />
-        </div>
+      <div className="relative z-10">
+        <Pages />
       </div>
     </div>
   );

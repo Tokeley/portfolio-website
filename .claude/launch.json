@@ -2,11 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "clara-portfolio",
+      "name": "portfolio-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "/Users/alexpersonal/Documents/repos/clara-portfolio"],
-      "port": 3000,
-      "autoPort": true
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
     }
   ]
 }
